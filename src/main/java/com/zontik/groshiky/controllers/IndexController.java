@@ -31,6 +31,9 @@ public class IndexController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String addUser(@ModelAttribute("user") User user) {
+        if (userService.findByLogin(user.getLogin()) != null) {
+           return "registration";
+        }
         userService.createUser(user);
         return "dashboard";
     }
