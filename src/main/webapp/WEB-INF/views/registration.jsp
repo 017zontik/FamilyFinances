@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: 017zo
@@ -16,9 +17,6 @@
     <meta name="generator" content="Jekyll v4.0.1">
     <title>Registration</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/sign-in/">
-
-    <!-- Bootstrap core CSS -->
     <link href="styles/css/bootstrap.css" type="text/css" rel="stylesheet">
 
     <style>
@@ -51,8 +49,13 @@
                     autofocus=""/>
         <label for="username">User name</label>
     </div>
+    <c:if test="${error != null}">
+       <div class="alert alert-danger" role="alert">
+            ${error}
+       </div>
+    </c:if>
     <div class="form-label-group">
-        <form:input path="login" id="login" class="form-control" placeholder="Login name" required="required"
+         <form:input path="login" id="login" class="form-control" placeholder="Login name" required="required"
                     autofocus=""/>
         <label for="login">Login name</label>
     </div>
@@ -61,7 +64,6 @@
                     autofocus=""/>
         <label for="password">Password</label>
     </div>
-
     <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
     <p class="mt-5 mb-3 text-muted"></p>
 </form:form>
