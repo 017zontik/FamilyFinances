@@ -49,10 +49,10 @@
                     autofocus=""/>
         <label for="username">User name</label>
     </div>
-    <div class="form-label-group">
-         <form:input path="login" id="login" class="form-control is-invalid" placeholder="Login name" required="required"
+    <div  class="form-label-group">
+        <form:input path="login" id="login" class="form-control ${error!=null ? 'is-invalid':''}" placeholder="Login name" required="required"
                     autofocus="" />
-        <label for="login"  >Login name</label>
+        <label for="login">Login name</label>
     </div>
     <c:if test="${error != null}">
         <div class="alert alert-danger" role="alert">
