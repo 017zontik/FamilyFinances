@@ -49,20 +49,20 @@
                     autofocus=""/>
         <label for="username">User name</label>
     </div>
-    <c:if test="${error != null}">
-       <div class="alert alert-danger" role="alert">
-            ${error}
-       </div>
-    </c:if>
     <div class="form-label-group">
-         <form:input path="login" id="login" class="form-control" placeholder="Login name" required="required"
-                    autofocus=""/>
-        <label for="login">Login name</label>
+         <form:input path="login" id="login" class="form-control is-invalid" placeholder="Login name" required="required"
+                    autofocus="" />
+        <label for="login"  >Login name</label>
     </div>
+    <c:if test="${error != null}">
+        <div class="alert alert-danger" role="alert">
+                ${error}
+        </div>
+    </c:if>
     <div class="form-label-group">
         <form:input path="password" type="password" id="password" class="form-control" placeholder="Password" required="required"
                     autofocus=""/>
-        <label for="password">Password</label>
+        <label for="password" >Password</label>
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
     <p class="mt-5 mb-3 text-muted"></p>
