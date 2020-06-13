@@ -6,7 +6,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 
 @Repository
@@ -23,13 +22,9 @@ public class UserDao implements IUserDao {
 
     @Override
     public User findByLogin(String login) {
-        try {
-            Session session = sessionFactory.getCurrentSession();
-            Query<User> findByUsername = session.createQuery("from User where login = :login");
-            findByUsername.setParameter("login", login);
-            return findByUsername.getSingleResult();
-        } catch (NoResultException ex) {
-            return null;
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Query<User> findByUsername = session.createQuery("from User where login = :login");
+        findByUsername.setParameter("login", login);
+        return findByUsername.uniqueResult();
     }
 }
