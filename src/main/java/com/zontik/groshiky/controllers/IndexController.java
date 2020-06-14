@@ -30,7 +30,11 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String addUser(@ModelAttribute("user") User user) {
+    public String addUser(@ModelAttribute("user") User user, Model model) {
+        if (userService.findByLogin(user.getLogin()) != null) {
+            model.addAttribute("error", "This login name is already taken. Please enter another one.");
+            return "registration";
+        }
         userService.createUser(user);
         return "dashboard";
     }
