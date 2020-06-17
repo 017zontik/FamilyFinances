@@ -19,6 +19,8 @@ public class IndexController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(ModelMap model) {
+        User user = new User();
+        model.addAttribute("user",user);
         return "index";
     }
 
@@ -38,4 +40,9 @@ public class IndexController {
         userService.createUser(user);
         return "dashboard";
     }
+    @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+    public String dashboard(ModelMap model) {
+          return "dashboard";
+    }
+
 }
