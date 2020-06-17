@@ -2,6 +2,7 @@ package com.zontik.groshiky.security;
 
 import com.zontik.groshiky.dao.IRoleDao;
 import com.zontik.groshiky.dao.IUserDao;
+import com.zontik.groshiky.model.Role;
 import com.zontik.groshiky.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -11,7 +12,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import sun.security.util.Password;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +26,8 @@ public class AppAuthenticationProvider implements AuthenticationProvider {
     private IUserDao userDao;
     @Autowired
     private IRoleDao roleDao;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -33,10 +38,11 @@ public class AppAuthenticationProvider implements AuthenticationProvider {
         }
         String password = auth.getCredentials().toString();
 
-        if(!password.equals(user.getPassword())){
+        if(!passwordEncoder.matches(password, user.getPassword())){
             throw new BadCredentialsException("Incorrect username or password");
         }
-        List<SimpleGrantedAuthority> authorities = user.getRoles().stream().map(it -> new SimpleGrantedAuthority("ROLE_" + it.getName())).collect(Collectors.toList());
+        List<SimpleGrantedAuthority> authorities = user.getRoles().stream().map(
+                it -> new SimpleGrantedAuthority("ROLE_" + it.getName())).collect(Collectors.toList());
         return new UsernamePasswordAuthenticationToken(user, null, authorities);
     }
 
