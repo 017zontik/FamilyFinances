@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 import java.util.Collections;
@@ -20,8 +21,12 @@ public class UserDao implements IUserDao {
     @Autowired
     private IRoleDao roleDao;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public void createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role role = roleDao.findRoleUser("ADMIN");
         user.setRoles(Collections.singletonList(role));
         sessionFactory.getCurrentSession().save(user);
