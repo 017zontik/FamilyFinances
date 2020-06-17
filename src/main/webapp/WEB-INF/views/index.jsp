@@ -1,4 +1,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: 017zo
@@ -39,19 +40,26 @@
             }
         }
     </style>
-    <!-- Custom styles for this template -->
+    <link href="styles/css/floating-labels.css" type="text/css" rel="stylesheet">
 
 </head>
-<body class="text-center">
+<body >
+<form:form method="post" action="perform_index" modelAttribute="user" class="form-signin">
 
-<form class="form-signin">
-    <%--@declare id="inputlogin"--%><link href="styles/css/signin.css" rel="stylesheet">
-    <img class="mb-4" src="styles/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputLogin" class="sr-only">Login</label>
-    <input type="login" id="inputLogin" class="form-control" placeholder="Login" required autofocus>
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    <div class="text-center mb-4">
+        <img class="mb-4" src="styles/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Please sing in</h1>
+    </div>
+    <div class="form-label-group">
+        <form:input path="login" id="login" class="form-control" placeholder="Login" required="required"
+                    autofocus=""/>
+        <label for="login">Login</label>
+    </div>
+    <div class="form-label-group">
+        <form:input path="password" type="password" id="password" class="form-control" placeholder="Password" required="required"
+                    autofocus=""/>
+        <label for="password" >Password</label>
+    </div>
     <div class="checkbox mb-3">
         <label>
             <a href="registration">registration</a>
@@ -59,6 +67,6 @@
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     <p class="mt-5 mb-3 text-muted"></p>
-</form>
+</form:form>
 </body>
 </html>
