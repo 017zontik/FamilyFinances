@@ -15,14 +15,18 @@ import java.util.Collections;
 @Transactional
 public class UserDao implements IUserDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
+
+    private final IRoleDao roleDao;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private IRoleDao roleDao;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserDao(SessionFactory sessionFactory, IRoleDao roleDao, PasswordEncoder passwordEncoder) {
+        this.sessionFactory = sessionFactory;
+        this.roleDao = roleDao;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public void createUser(User user) {
