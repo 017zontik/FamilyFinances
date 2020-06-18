@@ -15,12 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public final AuthenticationProvider authenticationProvider;
-
     @Autowired
-    public AppSecurityConfig(AuthenticationProvider authenticationProvider) {
-        this.authenticationProvider = authenticationProvider;
-    }
+    public AuthenticationProvider authenticationProvider;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
