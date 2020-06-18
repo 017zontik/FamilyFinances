@@ -1,8 +1,6 @@
 package com.zontik.groshiky.security;
 
-import com.zontik.groshiky.dao.IRoleDao;
 import com.zontik.groshiky.dao.IUserDao;
-import com.zontik.groshiky.model.Role;
 import com.zontik.groshiky.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -14,20 +12,20 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import sun.security.util.Password;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class AppAuthenticationProvider implements AuthenticationProvider {
 
+    private final IUserDao userDao;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    private IUserDao userDao;
-    @Autowired
-    private IRoleDao roleDao;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public AppAuthenticationProvider(IUserDao userDao, PasswordEncoder passwordEncoder) {
+        this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
+    }
 
 
     @Override

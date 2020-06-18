@@ -12,8 +12,12 @@ import javax.transaction.Transactional;
 @Transactional
 public class RoleDao implements IRoleDao{
 
+    private final SessionFactory sessionFactory;
+
     @Autowired
-    private SessionFactory sessionFactory;
+    public RoleDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public Role findRoleUser(String roleName) {
@@ -21,4 +25,5 @@ public class RoleDao implements IRoleDao{
         query.setParameter("rolename", roleName);
         return query.getSingleResult();
     }
+
 }
