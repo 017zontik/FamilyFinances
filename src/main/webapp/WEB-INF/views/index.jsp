@@ -1,5 +1,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+
 <%--
   Created by IntelliJ IDEA.
   User: 017zo
@@ -44,22 +47,28 @@
 
 </head>
 <body >
-<form:form method="post" action="perform_index" modelAttribute="user" class="form-signin">
 
+<form:form method="post" action="index" modelAttribute="user" class="form-signin">
     <div class="text-center mb-4">
         <img class="mb-4" src="styles/brand/bootstrap-solid.svg" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Please sing in</h1>
     </div>
+
     <div class="form-label-group">
         <form:input path="login" id="login" class="form-control" placeholder="Login" required="required"
                     autofocus=""/>
         <label for="login">Login</label>
     </div>
-    <div class="form-label-group">
+       <div class="form-label-group">
         <form:input path="password" type="password" id="password" class="form-control" placeholder="Password" required="required"
                     autofocus=""/>
         <label for="password" >Password</label>
     </div>
+    <c:if test="${error}">
+        <div class="alert alert-danger" role="alert" >
+            Wrong login or password
+        </div>
+    </c:if>
     <div class="checkbox mb-3">
         <label>
             <a href="registration">registration</a>
