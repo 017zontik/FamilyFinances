@@ -1,22 +1,38 @@
 package com.zontik.groshiky.dao;
 
+import com.zontik.groshiky.model.Role;
 import com.zontik.groshiky.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
+import java.util.Collections;
 
 @Repository
 @Transactional
 public class UserDao implements IUserDao {
 
+    private final SessionFactory sessionFactory;
+
+    private final IRoleDao roleDao;
+
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    private SessionFactory sessionFactory;
+    public UserDao(SessionFactory sessionFactory, IRoleDao roleDao, PasswordEncoder passwordEncoder) {
+        this.sessionFactory = sessionFactory;
+        this.roleDao = roleDao;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public void createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Role role = roleDao.findRoleUser("ADMIN");
+        user.setRoles(Collections.singletonList(role));
         sessionFactory.getCurrentSession().save(user);
     }
 

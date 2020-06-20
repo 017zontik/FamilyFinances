@@ -9,16 +9,31 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
 public class IndexController {
 
+    private final IUserService userService;
+
     @Autowired
-    private IUserService userService;
+    public IndexController(IUserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(ModelMap model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        return "index";
+    }
+
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String index(@RequestParam(value = "error", required = false) String error, Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        model.addAttribute("error", error!=null);
         return "index";
     }
 
@@ -38,4 +53,10 @@ public class IndexController {
         userService.createUser(user);
         return "dashboard";
     }
+
+    @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+    public String dashboard(ModelMap model) {
+        return "dashboard";
+    }
+
 }
