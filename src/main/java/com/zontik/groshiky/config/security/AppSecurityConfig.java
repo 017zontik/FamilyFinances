@@ -2,6 +2,7 @@ package com.zontik.groshiky.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,17 +12,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
 @Configuration
 @EnableWebSecurity
+@ComponentScan("com.zontik.*")
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    public AuthenticationProvider authenticationProvider;
+    private AuthenticationProvider authenticationProvider;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -37,7 +41,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                     .formLogin()
                     .loginPage("/index")
                     .usernameParameter("login")
-                    .loginProcessingUrl("/perform_index")
                     .defaultSuccessUrl("/dashboard");
     }
 }
