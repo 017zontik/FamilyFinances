@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("com.zontik.*")
+
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
