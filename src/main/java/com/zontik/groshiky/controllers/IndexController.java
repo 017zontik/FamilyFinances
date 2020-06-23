@@ -1,8 +1,10 @@
 package com.zontik.groshiky.controllers;
 
 import com.zontik.groshiky.model.User;
+import com.zontik.groshiky.service.IAccountService;
 import com.zontik.groshiky.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -15,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class IndexController {
 
+    private final IAccountService accountService;
     private final IUserService userService;
 
     @Autowired
-    public IndexController(IUserService userService) {
+    public IndexController(IUserService userService, IAccountService accountService) {
         this.userService = userService;
+        this.accountService = accountService;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -33,7 +37,7 @@ public class IndexController {
     public String index(@RequestParam(value = "error", required = false) String error, Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        model.addAttribute("error", error!=null);
+        model.addAttribute("error", error != null);
         return "index";
     }
 
@@ -55,8 +59,12 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-    public String dashboard(ModelMap model) {
+    public String dashboard(Model model) {
+        User user = userService.findUserById(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+        model.addAttribute("accounts", user.getAccounts());
         return "dashboard";
+
+
     }
 
 }
