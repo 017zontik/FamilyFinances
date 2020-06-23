@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!doctype html>
@@ -57,14 +58,17 @@
                         <span data-feather="plus-circle"></span>
                     </a>
                 </h6>
-                <ul class="nav flex-column mb-2">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Alfa-bank
-                        </a>
-                    </li>
-                </ul>
+                    <c:forEach var="account" items="${accounts}">
+                    <ul class="nav flex-column mb-2" >
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" >
+                                <span data-feather="file-text" ></span>
+                                ${account.name}
+                                ${account.balance}
+                            </a>
+                        </li>
+                    </ul>
+                    </c:forEach>
             </div>
         </nav>
 
