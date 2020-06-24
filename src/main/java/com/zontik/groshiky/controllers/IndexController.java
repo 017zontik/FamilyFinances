@@ -1,7 +1,6 @@
 package com.zontik.groshiky.controllers;
 
 import com.zontik.groshiky.model.User;
-import com.zontik.groshiky.service.IAccountService;
 import com.zontik.groshiky.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,13 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class IndexController {
 
-    private final IAccountService accountService;
     private final IUserService userService;
 
     @Autowired
-    public IndexController(IUserService userService, IAccountService accountService) {
+    public IndexController(IUserService userService) {
         this.userService = userService;
-        this.accountService = accountService;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
