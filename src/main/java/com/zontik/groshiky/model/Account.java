@@ -21,7 +21,7 @@ public class Account {
     private String name;
 
     @Column
-    private Long balance;
+    private Float balance;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
