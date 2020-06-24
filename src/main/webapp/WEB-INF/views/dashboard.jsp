@@ -53,18 +53,20 @@
 
 
                 <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                    <span>Purses</span>
+                    <span>Accounts</span>
                     <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
                         <span data-feather="plus-circle"></span>
                     </a>
                 </h6>
                     <c:forEach var="account" items="${accounts}">
-                    <ul class="nav flex-column mb-2" >
+                    <ul class="nav flex-column mb-2"  >
                         <li class="nav-item">
                             <a class="nav-link" href="#" >
                                 <span data-feather="file-text" ></span>
                                 ${account.name}
-                                ${account.balance}
+                                <span class="text-${account.balance<0 ? 'danger':'success'} float-sm-right" > <strong>
+                                        ${String.format("%.2f",account.balance)} BYN
+                                </strong></span>
                             </a>
                         </li>
                     </ul>
