@@ -48,10 +48,8 @@
 
 <div class="container-fluid">
     <div class="row">
-        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <nav id="sidebarMenu" class="col-md-4 col-lg-4 d-md-block bg-light sidebar collapse">
             <div class="sidebar-sticky pt-3">
-
-
                 <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                     <span>Accounts</span>
                     <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
@@ -62,11 +60,17 @@
                     <ul class="nav flex-column mb-2"  >
                         <li class="nav-item">
                             <a class="nav-link" href="#" >
-                                <span data-feather="file-text" ></span>
-                                ${account.name}
-                                <span class="text-${account.balance<0 ? 'danger':'success'} float-sm-right" > <strong>
+                                <div class="row align-items-start">
+                                    <div class="col-12 col-md-8">
+                                    <span data-feather="file-text" ></span>
+                                            ${account.name}
+                                     </div>
+                                     <div class="col-md-4" r>
+                                     <span class="text-${account.balance<0 ? 'danger':'success'}"><strong>
                                         ${String.format("%.2f",account.balance)} BYN
-                                </strong></span>
+                                     </strong></span>
+                                </div>
+                                </div>
                             </a>
                         </li>
                     </ul>
@@ -74,7 +78,7 @@
             </div>
         </nav>
 
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+        <main role="main" class="col-md-8 ml-sm-auto col-lg-8 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Dashboard</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
