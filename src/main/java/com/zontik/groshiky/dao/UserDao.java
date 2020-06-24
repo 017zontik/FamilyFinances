@@ -37,6 +37,15 @@ public class UserDao implements IUserDao {
     }
 
     @Override
+    public User findById(Integer id) {
+        Session session = sessionFactory.getCurrentSession();
+        Query<User> findById = session.createQuery("from User where id = :id");
+        findById.setParameter("id", id);
+        return findById.uniqueResult();
+
+    }
+
+    @Override
     public User findByLogin(String login) {
         Session session = sessionFactory.getCurrentSession();
         Query<User> findByUsername = session.createQuery("from User where login = :login");
