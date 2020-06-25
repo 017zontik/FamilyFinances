@@ -30,10 +30,12 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index(@RequestParam(value = "error", required = false) String error, Model model) {
+    public String index(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "success", required = false) String success,Model model) {
         User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("error", error!=null);
+        model.addAttribute("success",success!=null);
         return "index";
     }
 
@@ -51,7 +53,7 @@ public class IndexController {
             return "registration";
         }
         userService.createUser(user);
-        return "dashboard";
+        return "redirect:dashboard";
     }
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)

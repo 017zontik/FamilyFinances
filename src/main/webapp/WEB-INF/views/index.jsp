@@ -53,7 +53,11 @@
         <img class="mb-4" src="styles/brand/bootstrap-solid.svg" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Please sing in</h1>
     </div>
-
+    <c:if test="${success != null}">
+        <div class="alert alert-success" role="alert">
+            You have successfully registered. Please log in.
+        </div>
+    </c:if>
     <div class="form-label-group">
         <form:input path="login" id="login" class="form-control" placeholder="Login" required="required"
                     autofocus=""/>
