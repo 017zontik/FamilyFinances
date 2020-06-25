@@ -3,7 +3,6 @@ package com.zontik.groshiky.controllers;
 import com.zontik.groshiky.model.User;
 import com.zontik.groshiky.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-public class IndexController {
+public class IndexController extends BaseController{
 
     private final IUserService userService;
 
@@ -57,11 +56,9 @@ public class IndexController {
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
     public String dashboard(Model model) {
-        User user = userService.findUserById(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+        User user = userService.findUserById(getUserId());
         model.addAttribute("accounts", user.getAccounts());
         return "dashboard";
-
-
     }
 
 }
