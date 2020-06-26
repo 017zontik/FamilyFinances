@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-public class IndexController {
+public class IndexController extends BaseController{
 
     private final IUserService userService;
 
@@ -33,7 +33,7 @@ public class IndexController {
     public String index(@RequestParam(value = "error", required = false) String error, Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        model.addAttribute("error", error!=null);
+        model.addAttribute("error", error != null);
         return "index";
     }
 
@@ -55,7 +55,9 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-    public String dashboard(ModelMap model) {
+    public String dashboard(Model model) {
+        User user = userService.findUserById(getUserId());
+        model.addAttribute("accounts", user.getAccounts());
         return "dashboard";
     }
 
