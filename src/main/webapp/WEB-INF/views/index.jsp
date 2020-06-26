@@ -1,6 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.zontik.groshiky.model.OperationResult" %>
 
 
 <%--
@@ -53,7 +54,7 @@
         <img class="mb-4" src="styles/brand/bootstrap-solid.svg" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Please sing in</h1>
     </div>
-    <c:if test="${success != null}">
+    <c:if test="${result == OperationResult.REGISTERED}">
         <div class="alert alert-success" role="alert">
             You have successfully registered. Please log in.
         </div>
@@ -68,7 +69,8 @@
                     autofocus=""/>
         <label for="password" >Password</label>
     </div>
-    <c:if test="${error}">
+
+    <c:if test="${result == OperationResult.NOTAUTHORISED}">
         <div class="alert alert-danger" role="alert" >
             Wrong login or password
         </div>
