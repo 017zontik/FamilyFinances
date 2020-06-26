@@ -3,32 +3,36 @@ package com.zontik.groshiky.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+
 
 @Data
 @Builder
 @Entity
-@Table(name = "roles")
+@Table(name = "accounts")
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class Role {
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "name")
+    @Column
     private String name;
 
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private List<User> users;
+    @Column
+    private Float balance;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Override
     public String toString() {
-        return "Role{" +
+        return "Account{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", balance=" + balance +
                 '}';
     }
 }

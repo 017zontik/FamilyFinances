@@ -5,4 +5,5 @@ import com.zontik.groshiky.model.User;
 public interface IUserService {
     void createUser (User user);
     User findByLogin(String login);
+    User findUserById(Integer id);
 }
