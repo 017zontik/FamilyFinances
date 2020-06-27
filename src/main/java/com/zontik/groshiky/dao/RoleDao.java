@@ -1,6 +1,7 @@
 package com.zontik.groshiky.dao;
 
 import com.zontik.groshiky.model.Role;
+import com.zontik.groshiky.model.Roles;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class RoleDao implements IRoleDao{
     }
 
     @Override
-    public Role findRoleUser(String roleName) {
+    public Role findRoleUser(Roles roleName) {
         Query<Role> query = sessionFactory.getCurrentSession().createQuery("from Role where name = :rolename");
         query.setParameter("rolename", roleName);
         return query.getSingleResult();
