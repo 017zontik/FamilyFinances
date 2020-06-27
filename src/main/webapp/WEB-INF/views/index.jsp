@@ -1,16 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.zontik.groshiky.model.OperationResult" %>
-
-
-<%--
-  Created by IntelliJ IDEA.
-  User: 017zo
-  Date: 31.05.2020
-  Time: 20:41
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!doctype html>
@@ -54,11 +44,13 @@
         <img class="mb-4" src="styles/brand/bootstrap-solid.svg" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Please sing in</h1>
     </div>
-    <c:if test="${result == OperationResult.REGISTERED}">
+
+    <c:if test="${registered}">
         <div class="alert alert-success" role="alert">
             You have successfully registered. Please log in.
         </div>
     </c:if>
+
     <div class="form-label-group">
         <form:input path="login" id="login" class="form-control" placeholder="Login" required="required"
                     autofocus=""/>
@@ -70,11 +62,12 @@
         <label for="password" >Password</label>
     </div>
 
-    <c:if test="${result == OperationResult.NOTAUTHORISED}">
+    <c:if test="${error}">
         <div class="alert alert-danger" role="alert" >
             Wrong login or password
         </div>
     </c:if>
+
     <div class="checkbox mb-3">
         <label>
             <a href="registration">registration</a>

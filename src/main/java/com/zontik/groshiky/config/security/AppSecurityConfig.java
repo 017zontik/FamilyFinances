@@ -40,7 +40,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .formLogin()
                     .loginPage("/index")
-                    .failureUrl("/index?result=NOTAUTHORISED")
                     .usernameParameter("login")
                     .defaultSuccessUrl("/dashboard");
     }

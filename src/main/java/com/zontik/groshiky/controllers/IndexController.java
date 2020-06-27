@@ -1,6 +1,5 @@
 package com.zontik.groshiky.controllers;
 
-import com.zontik.groshiky.model.OperationResult;
 import com.zontik.groshiky.model.User;
 import com.zontik.groshiky.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +30,11 @@ public class IndexController extends BaseController{
     }
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index(@RequestParam(value = "result", required = false)OperationResult result,
+    public String index(@RequestParam(value = "error", required = false)String error,
                         Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        model.addAttribute("result", result);
+        model.addAttribute("error", error!=null);
         return "index";
     }
 
@@ -53,7 +52,11 @@ public class IndexController extends BaseController{
             return "registration";
         }
         userService.createUser(user);
-        return "redirect:index?result=" + OperationResult.REGISTERED;
+        User userWithoutPassword = new User();
+        userWithoutPassword.setLogin(user.getLogin());
+        model.addAttribute("user", userWithoutPassword);
+        model.addAttribute("registered", true);
+        return "index";
     }
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
