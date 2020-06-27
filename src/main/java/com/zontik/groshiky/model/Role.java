@@ -19,7 +19,8 @@ public class Role {
     private Integer id;
 
     @Column(name = "name")
-    private String name;
+    @Enumerated(value = EnumType.STRING)
+    private Roles name;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private List<User> users;
