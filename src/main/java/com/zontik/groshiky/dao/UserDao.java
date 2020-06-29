@@ -1,6 +1,7 @@
 package com.zontik.groshiky.dao;
 
 import com.zontik.groshiky.model.Role;
+import com.zontik.groshiky.model.Roles;
 import com.zontik.groshiky.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -31,7 +32,7 @@ public class UserDao implements IUserDao {
     @Override
     public void createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role role = roleDao.findRoleUser("ADMIN");
+        Role role = roleDao.findRoleUser(Roles.ADMIN);
         user.setRoles(Collections.singletonList(role));
         sessionFactory.getCurrentSession().save(user);
     }
