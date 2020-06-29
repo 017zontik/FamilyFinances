@@ -1,6 +1,7 @@
 package com.zontik.groshiky.config;
 
 
+import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -59,6 +60,13 @@ public class HibernateConfig {
         hibernateproperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         return hibernateproperties;
 
+    }
+    @Bean
+    public SpringLiquibase liquibase() {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setChangeLog("classpath:changeLog.xml");
+        liquibase.setDataSource(getDataSource());
+        return liquibase;
     }
 
 }

@@ -6,12 +6,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public class RoleDao implements IRoleDao{
+public class RoleDao implements IRoleDao {
 
     private final SessionFactory sessionFactory;
 
@@ -21,10 +20,9 @@ public class RoleDao implements IRoleDao{
     }
 
     @Override
-    public Role findRoleUser(Roles roleName) {
+    public Role findRoleUser(Roles role) {
         Query<Role> query = sessionFactory.getCurrentSession().createQuery("from Role where name = :rolename");
-        query.setParameter("rolename", roleName);
+        query.setParameter("rolename", role);
         return query.getSingleResult();
     }
-
 }
