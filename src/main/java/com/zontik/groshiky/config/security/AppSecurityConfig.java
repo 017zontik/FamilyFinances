@@ -21,25 +21,28 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationProvider authenticationProvider;
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
-       auth.authenticationProvider(authenticationProvider);
+        auth.authenticationProvider(authenticationProvider);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .antMatchers("/index").permitAll()
-                    .antMatchers("/dashboard").authenticated()
+                .antMatchers("/").permitAll()
+                .antMatchers("/index").permitAll()
+                .antMatchers("/registration").permitAll()
+                .antMatchers("/dashboard").authenticated()
                 .and()
-                    .formLogin()
-                    .loginPage("/index")
-                    .usernameParameter("login")
-                    .defaultSuccessUrl("/dashboard");
+                .formLogin()
+                .loginPage("/index")
+                .loginProcessingUrl("/custom_login")
+                .usernameParameter("login")
+                .defaultSuccessUrl("/dashboard");
     }
 }
