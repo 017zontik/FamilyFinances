@@ -1,7 +1,6 @@
 package com.zontik.groshiky.model;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 

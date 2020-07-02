@@ -1,9 +1,11 @@
 package com.zontik.groshiky.dao;
 
 import com.zontik.groshiky.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface IUserDao {
+
+@Repository
+public interface IUserDao extends JpaRepository<User, Integer> {
     User findByLogin(String login);
-    void createUser(User user);
-    User findById(Integer id);
 }

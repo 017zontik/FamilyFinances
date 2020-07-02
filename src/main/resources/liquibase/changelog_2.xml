@@ -7,15 +7,16 @@
    http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet author="Admin" id="1">
-        <insert tableName="roles">
-            <column name="id" valueNumeric="1" />
-            <column name="name" value="ADMIN"/>
-        </insert>
-        <insert tableName="roles">
-            <column name="id" valueNumeric="2" />
-            <column name="name" value="USER"/>
-        </insert>
+    <changeSet author="Admin" id="2">
+        <createTable tableName="roles">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+
+        </createTable>
     </changeSet>
 
 </databaseChangeLog>
