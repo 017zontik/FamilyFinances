@@ -10,7 +10,8 @@
     <meta name="generator" content="Jekyll v4.0.1">
     <title>Dashboard</title>
 
-    <link href="styles/css/bootstrap.css" rel="stylesheet">
+<!--    <link href="styles/css/bootstrap.css" rel="stylesheet">-->
+
 
     <style>
         .bd-placeholder-img {
@@ -50,9 +51,50 @@
                 <div class="sidebar-sticky pt-3">
                     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                         <span>Accounts</span>
-                        <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                            <span data-feather="plus-circle"></span>
+
+<div>
+                        <a type="button" class="btn d-flex align-items-center text-muted" data-toggle="modal" data-target="#exampleModal" href="#exampleModal">
+                               <span data-feather="plus-circle"></span>
                         </a>
+
+
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">New Account</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="post"  th:action="@{/addAccount}"  th:object="${account}" class="form-signin">
+<!--                                            <div class="form-group">-->
+<!--                                                <label for="name" class="col-form-label">Accounts name:</label>-->
+<!--                                                <input th:field="*{name}" type="text" class="form-control" id="name">-->
+<!--&lt;!&ndash;                                            </div>&ndash;&gt;-->
+<!--                                            <input th:field="*{name}" id="name" class="form-control" placeholder="name" required="required"-->
+<!--                                                   autofocus=""/>-->
+<!--                                            <label for="name">Name</label>-->
+<!--                                            <div class="form-group">-->
+<!--                                                <label for="balance" class="col-form-label">Accounts name:</label>-->
+<!--                                                <input th:field="*{balance}" type="text" class="form-control" id="balance">-->
+<!--                                            </div>-->
+                                        </form>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" th:value="addAccount">Save account</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+</div>
+
+
                     </h6>
                     <div th:each="account: ${accounts}" >
                         <ul class="nav flex-column mb-2"  >
@@ -122,6 +164,14 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
 <script src="scripts/dashboard.js"></script>
+<script src="scripts/modal.js"></script>
+<!-- CSS only -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+<!-- JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </body>
 
 </html>
