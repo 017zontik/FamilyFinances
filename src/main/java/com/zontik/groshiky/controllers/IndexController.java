@@ -8,8 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 
 @Controller
 public class IndexController extends BaseController{
@@ -65,10 +63,4 @@ public class IndexController extends BaseController{
         return "dashboard";
     }
 
-//    @RequestMapping(value = "/about-user/{id}", method = RequestMethod.GET)
-//    public String getUser(@RequestParam(name = "id") Integer id) {
-//        User user = userService.findUserById(id);
-//
-//        return "about-user";
-//    }
 }
