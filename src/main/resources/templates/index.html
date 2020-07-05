@@ -4,10 +4,6 @@
       layout:decorate="~{fragments/layout}">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v4.0.1">
     <title>Groshiky</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/sign-in/">
@@ -34,9 +30,9 @@
     <link href="styles/css/floating-labels.css" type="text/css" rel="stylesheet">
 
 </head>
-<body >
+<body>
 
-<form method="post"  th:action="@{/custom_login}"  th:object="${user}" class="form-signin">
+<form method="post" th:action="@{/custom_login}" th:object="${user}" class="form-signin">
     <div class="text-center mb-4">
         <img class="mb-4" src="styles/brand/bootstrap-solid.svg" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Please sing in</h1>
@@ -50,17 +46,18 @@
 
     <div class="form-label-group">
         <input th:field="*{login}" id="login" class="form-control" placeholder="Login" required="required"
-                    autofocus=""/>
+               autofocus=""/>
         <label for="login">Login</label>
     </div>
     <div class="form-label-group">
-        <input th:field="*{password}" type="password" id="password" class="form-control" placeholder="Password" required="required"
-                    autofocus=""/>
-        <label for="password" >Password</label>
+        <input th:field="*{password}" type="password" id="password" class="form-control" placeholder="Password"
+               required="required"
+               autofocus=""/>
+        <label for="password">Password</label>
     </div>
 
     <div th:if="${param.error}">
-        <div class="alert alert-danger" role="alert" >
+        <div class="alert alert-danger" role="alert">
             Wrong login or password
         </div>
     </div>
