@@ -16,7 +16,6 @@ import java.util.Collections;
 
 @Service
 @Transactional
-@Slf4j
 public class UserService implements IUserService {
 
     private final PasswordEncoder PasswordEncoder;
@@ -44,13 +43,7 @@ public class UserService implements IUserService {
 
     @Override
     public User findUserById(Integer id) {
-        User user = userDao.findById(id).orElse(null);
-        if(user == null){
-            log.info("No user found  by id - {}", id);
-            return null;
-        }
-        log.info("User found by id - {}", user);
-        return user;
+        return userDao.findById(id).orElse(null);
     }
 
 }
