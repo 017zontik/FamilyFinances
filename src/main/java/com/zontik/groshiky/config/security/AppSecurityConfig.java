@@ -43,6 +43,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/index")
                 .loginProcessingUrl("/custom_login")
                 .usernameParameter("login")
-                .defaultSuccessUrl("/dashboard");
+                .defaultSuccessUrl("/dashboard")
+                .and()
+                .csrf().disable();
     }
 }
