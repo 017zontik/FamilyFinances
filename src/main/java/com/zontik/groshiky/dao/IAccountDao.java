@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IAccountDao extends JpaRepository<Account, Integer> {
-    boolean existsByName(String name);
-
+      Account findByName(String name);
 }
