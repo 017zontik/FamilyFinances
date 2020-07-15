@@ -1,6 +1,6 @@
 package com.zontik.groshiky.security;
 
-import com.zontik.groshiky.dao.IUserDao;
+import com.zontik.groshiky.repository.UserRepository;
 import com.zontik.groshiky.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 @Component
 public class AppAuthenticationProvider implements AuthenticationProvider {
 
-    private final IUserDao userDao;
+    private final UserRepository userDao;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AppAuthenticationProvider(IUserDao userDao, PasswordEncoder passwordEncoder) {
+    public AppAuthenticationProvider(UserRepository userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
     }
