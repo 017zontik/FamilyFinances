@@ -1,6 +1,6 @@
 package com.zontik.groshiky.service;
 
-import com.zontik.groshiky.dao.IAccountDao;
+import com.zontik.groshiky.repository.AccountRepository;
 import com.zontik.groshiky.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,22 +8,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountService implements IAccountService{
 
-    private final IAccountDao accountDao;
+    private final AccountRepository accountRepository;
 
     @Autowired
-    public AccountService(IAccountDao accountDao) {
-        this.accountDao = accountDao;
+    public AccountService(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
     }
 
     @Override
     public Account addAccount(Account account) {
         account.setBalance(0f);
-        return accountDao.save(account);
+        return accountRepository.save(account);
     }
 
     @Override
     public Account getAccountByName(String name) {
-        return accountDao.findByName(name);
+        return accountRepository.findByName(name);
     }
 
 

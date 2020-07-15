@@ -1,11 +1,10 @@
 package com.zontik.groshiky.service;
 
-import com.zontik.groshiky.dao.IRoleDao;
-import com.zontik.groshiky.dao.IUserDao;
+import com.zontik.groshiky.repository.RoleRepository;
+import com.zontik.groshiky.repository.UserRepository;
 import com.zontik.groshiky.model.Role;
 import com.zontik.groshiky.model.Roles;
 import com.zontik.groshiky.model.User;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,31 +18,31 @@ import java.util.Collections;
 public class UserService implements IUserService {
 
     private final PasswordEncoder PasswordEncoder;
-    private final IUserDao userDao;
-    private final IRoleDao roleDao;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public UserService(IUserDao userDao, IRoleDao roleDao, PasswordEncoder PasswordEncoder) {
-        this.userDao = userDao;
-        this.roleDao = roleDao;
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder PasswordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.PasswordEncoder = PasswordEncoder;
     }
 
     public User createUser(User user) {
-        Role role = roleDao.findRoleByName(Roles.ADMIN);
+        Role role = roleRepository.findRoleByName(Roles.ADMIN);
         user.setRoles(Collections.singletonList(role));
         user.setPassword(PasswordEncoder.encode(user.getPassword()));
-        return userDao.save(user);
+        return userRepository.save(user);
     }
 
 
     public User findByLogin(String login) {
-        return userDao.findByLogin(login);
+        return userRepository.findByLogin(login);
     }
 
     @Override
     public User findUserById(Integer id) {
-        return userDao.findById(id).orElse(null);
+        return userRepository.findById(id).orElse(null);
     }
 
 }
