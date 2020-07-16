@@ -6,7 +6,7 @@ import lombok.Data;
 public class AccountResponse {
     private Result result;
     private String message;
-    private Account account;
+    private AccountModel accountModel;
 
     public enum Result {
         OK,
@@ -18,8 +18,8 @@ public class AccountResponse {
         this.message = message;
     }
 
-    public AccountResponse(Account account) {
+    public AccountResponse(AccountModel accountModel) {
         this.result = Result.OK;
-        this.account = account;
+        this.accountModel = accountModel;
     }
 }
