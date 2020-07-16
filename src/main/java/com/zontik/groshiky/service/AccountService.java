@@ -26,6 +26,4 @@ public class AccountService implements IAccountService{
     public Account getAccountByName(String name) {
         return accountRepository.findByName(name);
     }
-
-
 }
