@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 public class AccountService implements IAccountService{
 
     private final AccountRepository accountRepository;
+    private final static float DEFAULT_BALANCE = 0f;
 
     @Autowired
     public AccountService(AccountRepository accountRepository) {
@@ -17,7 +18,7 @@ public class AccountService implements IAccountService{
 
     @Override
     public Account addAccount(Account account) {
-        account.setBalance(0f);
+        account.setBalance(DEFAULT_BALANCE);
         return accountRepository.save(account);
     }
 
