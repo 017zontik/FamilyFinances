@@ -4,13 +4,10 @@
       layout:decorate="~{fragments/layout}">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v4.0.1">
     <title>Dashboard</title>
 
     <link href="styles/css/bootstrap.css" rel="stylesheet">
+
 
     <style>
         .bd-placeholder-img {
@@ -30,10 +27,12 @@
     </style>
 </head>
 <body>
-<form method="get" action="dashboard" th:action="@{/dashboard}"  >
+<form method="get" action="dashboard" th:action="@{/dashboard}">
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Groshiky</a>
-        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
+                data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+                aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -50,37 +49,60 @@
                 <div class="sidebar-sticky pt-3">
                     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                         <span>Accounts</span>
-                        <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+                        <a type="button" class="btn d-flex align-items-center text-muted" data-toggle="modal"
+                           data-target="#accountModal" href="#accountModal">
                             <span data-feather="plus-circle"></span>
                         </a>
                     </h6>
-                    <div th:each="account: ${accounts}" >
-                        <ul class="nav flex-column mb-2"  >
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" >
+                    <div>
+                        <ul class="nav flex-column mb-2" id="accountsList">
+                            <li class="nav-item" th:each="account: ${accounts}">
+                                <a class="nav-link" href="#">
                                     <div class="row align-items-start">
                                         <div class="col-12 col-md-8">
-                                            <span data-feather="file-text"  ></span>
+                                            <span data-feather="file-text"></span>
                                             <strong th:text="${account.name}"/>
 
                                         </div>
-                                        <div class="col-md-4" r>
+                                        <div class="col-md-4">
                                             <span th:if="${account.balance} < '0'" class="text-danger">
-                                                <strong th:text="${#numbers.formatDecimal(account.balance,0,2)} + ' BYN'" >
+                                                <strong th:text="${#numbers.formatDecimal(account.balance,1,2)} + ' BYN'">
                                                 </strong></span>
 
                                             <span th:unless="${account.balance} < '0'" class="text-success">
-                                                <strong th:text="${#numbers.formatDecimal(account.balance,0,2)} + ' BYN'" >
+                                                <strong th:text="${#numbers.formatDecimal(account.balance,1,2)} + ' BYN'">
                                                </strong></span>
                                         </div>
                                     </div>
                                 </a>
                             </li>
+
+                            <li class="nav-item" style="display: none" id="accountTemplate">
+                                <a class="nav-link" href="#">
+                                    <div class="row align-items-start">
+                                        <div class="col-12 col-md-8">
+                                            <span data-feather="file-text"></span>
+                                            <strong></strong>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <span class="text-danger">
+                                                <strong>
+                                                </strong></span>
+
+                                            <span class="text-success">
+                                                <strong>
+                                               </strong></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+
+
                         </ul>
                     </div>
                 </div>
             </nav>
-
             <main role="main" class="col-md-8 ml-sm-auto col-lg-8 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Dashboard</h1>
@@ -119,9 +141,43 @@
         </div>
     </div>
 </form>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<div class="modal fade" id="accountModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" class="form-signin" id="newAccount" >
+                    <div class="form-label-group">
+                        <label for="name" class="col-form-label" >Accounts name:</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                </form>
+                <br/>
+                <div class="alert alert-danger" style="display:none" role="alert"
+                     id="accountErrorMessage"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                </button>
+                <button type="button" class="btn btn-primary" id="saveAccount">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="scripts/jquery-3.5.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
 <script src="scripts/dashboard.js"></script>
+<script src="scripts/bootstrap.min.js"></script>
+
 </body>
 
 </html>

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Controller
-public class IndexController extends BaseController{
+public class IndexController extends BaseController {
 
     private final IUserService userService;
 
@@ -27,11 +27,11 @@ public class IndexController extends BaseController{
     }
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index(@RequestParam(value = "error", required = false)String error,
+    public String index(@RequestParam(value = "error", required = false) String error,
                         Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        model.addAttribute("error", error!=null);
+        model.addAttribute("error", error != null);
         return "index";
     }
 

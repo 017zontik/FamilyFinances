@@ -16,7 +16,6 @@
                 <constraints unique="true"/>
             </column>
             <column name="balance" type="FLOAT">
-                <constraints unique="true"/>
             </column>
             <column name="user_id" type="INT">
                 <constraints unique="false"/>

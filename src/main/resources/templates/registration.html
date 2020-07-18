@@ -3,10 +3,6 @@
       layout:decorate="~{fragments/layout}">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v4.0.1">
     <title>Registration</title>
 
     <link href="styles/css/bootstrap.css" type="text/css" rel="stylesheet">
@@ -38,23 +34,25 @@
     </div>
     <div class="form-label-group">
         <input th:field="*{username}" id="username" class="form-control" placeholder="User name" required="required"
-                    autofocus=""/>
+               autofocus=""/>
         <label for="username">User name</label>
     </div>
-    <div  class="form-label-group">
-        <input th:field="*{login}" id="login" class="form-control ${error!=null ? 'is-invalid':''}" placeholder="Login name" required="required"
-                    autofocus="" />
+    <div class="form-label-group">
+        <input th:field="*{login}" id="login" class="form-control ${error!=null ? 'is-invalid':''}"
+               placeholder="Login name" required="required"
+               autofocus=""/>
         <label for="login">Login name</label>
     </div>
     <div th:if="${error}">
-        <div class="alert alert-danger" role="alert" >
-           <div th:text="${error}"> </div>
+        <div class="alert alert-danger" role="alert">
+            <div th:text="${error}"></div>
         </div>
     </div>
     <div class="form-label-group">
-        <input th:field="*{password}" type="password" id="password" class="form-control" placeholder="Password" required="required"
-                    autofocus=""/>
-        <label for="password" >Password</label>
+        <input th:field="*{password}" type="password" id="password" class="form-control" placeholder="Password"
+               required="required"
+               autofocus=""/>
+        <label for="password">Password</label>
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
     <p class="mt-5 mb-3 text-muted"></p>
