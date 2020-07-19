@@ -10,7 +10,7 @@
 
     <changeSet id="8" author="Admin">
         <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="account"
+                                 baseTableName="accounts"
                                  constraintName="fk_account_user"
                                  onDelete="CASCADE"
                                  onUpdate="RESTRICT"
