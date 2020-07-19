@@ -56,7 +56,7 @@
                     </h6>
                     <div>
                         <ul class="nav flex-column mb-2" id="accountsList">
-                            <li class="nav-item" th:each="account: ${accounts}">
+                            <li class="nav-item" th:each="account: ${accounts}" th:data="${account.id}">
                                 <a class="nav-link" href="#">
                                     <div class="row align-items-start">
                                         <div class="col-12 col-md-8">

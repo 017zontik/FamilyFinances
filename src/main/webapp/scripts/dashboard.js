@@ -14,6 +14,7 @@
                     200: function (response) {
                         $("#accountModal").modal("hide");
                         let $accountClone = $("#accountTemplate").clone();
+                        $accountClone.attr("data", response.id);
                         $("a div div strong", $accountClone).text(response.name);
                         $(".text-success strong", $accountClone).text("0,00 BYN");
                         $(".text-danger", $accountClone).hide();
@@ -32,6 +33,12 @@
         $("#accountErrorMessage").hide();
         $("#name").val("");
 
+    });
+
+    $("li.nav-item[data]").click(function (clickAccountEvent) {
+        let $account = clickAccountEvent.target.closest("li");
+        let accountName = $("div > strong", $account).text();
+        $("main div h1").text(accountName);
     })
 
 
