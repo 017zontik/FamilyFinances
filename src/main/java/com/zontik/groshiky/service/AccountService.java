@@ -26,4 +26,9 @@ public class AccountService implements IAccountService{
     public Account getAccountByName(String name) {
         return accountRepository.findByName(name);
     }
+
+    @Override
+    public Account findAccountById(Integer id) {
+        return accountRepository.findAllById(id);
+    }
 }
