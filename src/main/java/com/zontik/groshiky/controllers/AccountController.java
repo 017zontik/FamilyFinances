@@ -3,7 +3,7 @@ package com.zontik.groshiky.controllers;
 import com.zontik.groshiky.model.Account;
 import com.zontik.groshiky.model.AccountModel;
 import com.zontik.groshiky.model.Transaction;
-import com.zontik.groshiky.model.TransactionModel;
+import com.zontik.groshiky.model.TransactionDto;
 import com.zontik.groshiky.service.IAccountService;
 import com.zontik.groshiky.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +39,12 @@ public class AccountController extends BaseController {
     }
 
     @GetMapping(value = "/transactions")
-    public ResponseEntity getTransactions (Integer accountId){
+    public List<TransactionDto> getTransactions (Integer accountId){
         List<Transaction> transactionList = (accountService.findAccountById(accountId)).getTransactions();
-        List<TransactionModel> transactionModelsList = new ArrayList<TransactionModel>();
+        List<TransactionDto> transactionDtos = new ArrayList<>();
         for (Transaction transaction:transactionList) {
-            transactionModelsList.add(new TransactionModel(transaction));
+            transactionDtos.add(new TransactionDto(transaction));
         }
-        return new ResponseEntity(transactionModelsList, HttpStatus.OK);
+        return transactionDtos;
     }
   }

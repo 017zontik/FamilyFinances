@@ -4,7 +4,7 @@ import lombok.Data;
 import java.time.format.DateTimeFormatter;
 
 @Data
-public class TransactionModel {
+public class TransactionDto {
     private Integer id;
     private String date;
     private String name;
@@ -12,7 +12,7 @@ public class TransactionModel {
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    public TransactionModel(Transaction transaction) {
+    public TransactionDto(Transaction transaction) {
         this.id = transaction.getId();
         this.date = (transaction.getDate()).format(formatter);
         this.name = transaction.getName();
