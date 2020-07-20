@@ -6,11 +6,11 @@
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
    http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-    <include file="/liquibase/changelog_1.xml"/>
-    <include file="/liquibase/changelog_2.xml"/>
-    <include file="/liquibase/changelog_3.xml"/>
-    <include file="/liquibase/changelog_4.xml"/>
-    <include file="/liquibase/changelog_5.xml"/>
-    <include file="/liquibase/changelog_6.xml"/>
-    <include file="/liquibase/changelog_7.xml"/>
+
+    <changeSet author="Admin" id="11">
+        <dropUniqueConstraint
+                tableName="accounts"
+                constraintName="name"/>
+    </changeSet>
+
 </databaseChangeLog>
