@@ -29,7 +29,7 @@ public class AccountController extends BaseController {
     @PostMapping(value = "/addAccount")
     public ResponseEntity addAccount(Account account) {
         account.setUser(userService.findUserById(getUserId()));
-        if(accountService.getAccountByName(account.getName())!=null){
+        if(accountService.getAccountByName(account.getName(), account.getUser().getId())!=null){
            String message =String.format("The account \"%s\" already exists", account.getName());
            return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
         }

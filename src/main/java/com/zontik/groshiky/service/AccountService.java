@@ -23,8 +23,8 @@ public class AccountService implements IAccountService{
     }
 
     @Override
-    public Account getAccountByName(String name) {
-        return accountRepository.findByName(name);
+    public Account getAccountByName(String name, Integer id) {
+        return accountRepository.findByNameAndUserId(name, id);
     }
 
     @Override

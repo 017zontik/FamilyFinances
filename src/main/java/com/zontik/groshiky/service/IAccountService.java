@@ -4,6 +4,6 @@ import com.zontik.groshiky.model.Account;
 
 public interface IAccountService {
     Account addAccount(Account account);
-    Account getAccountByName(String name);
+    Account getAccountByName(String name, Integer id);
     Account findAccountById(Integer id);
 }
