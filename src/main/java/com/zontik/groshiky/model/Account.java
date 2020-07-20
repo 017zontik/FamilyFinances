@@ -1,7 +1,11 @@
 package com.zontik.groshiky.model;
 
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
+import java.util.List;
 
 
 @Data
@@ -25,6 +29,10 @@ public class Account {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "account",fetch = FetchType.EAGER)
+    private List<Transaction> transactions;
 
     @Override
     public String toString() {
