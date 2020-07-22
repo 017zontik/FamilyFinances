@@ -66,6 +66,14 @@
     })
 
 
+    $("#transactionTypeDropDownMenu a").click(function (clickTransactionTypeEvent) {
+        let transactionType=$(clickTransactionTypeEvent.target).text();
+        $("#dropdownMenuButton").text(transactionType);
+    })
+
+
+
+
 }())
 
 
