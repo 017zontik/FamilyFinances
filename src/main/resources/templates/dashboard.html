@@ -8,7 +8,7 @@
 
     <link href="styles/css/bootstrap.css" rel="stylesheet">
     <link href="styles/css/dashboard.css" rel="stylesheet">
-    <link href="styles/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="styles/css/bootstrap-datetimepicker.css" rel="stylesheet">
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -195,23 +195,10 @@
                             <a class="dropdown-item" href="#">Expense</a>
                         </div>
                     </div>
-                    <div class="form-group">
-
-
-
-                    <form>
-                        <div class="form-group">
-                            <label for="name">Date of transaction:</label>
-                            <input type="date" class="form-control">
-
-                        </div>
-                    </form>
-
-
-<!--                    <div class="input-group date" data-provide="datepicker">-->
-<!--                        <label for="name" class="col-form-label">Date of transaction:</label>-->
-<!--                        <input type="text" class="form-control" >-->
-<!--                    </div>-->
+                    <div class="form-label-group" id="transactionDateTimePicker">
+                        <label for="name" class="col-form-label">Date of transaction:</label>
+                        <input type="text" class="form-control form_datetime" >
+                    </div>
 
                     <div class="form-label-group">
                         <label for="name" class="col-form-label">Transaction name:</label>
@@ -240,8 +227,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
 <script src="scripts/dashboard.js"></script>
 <script src="scripts/bootstrap.bundle.min.js"></script>
-<script src="scripts/bootstrap-datetimepicker.min.js"></script>
-<script src="scripts/moment-with-locales.min.js"></script>
+<script src="scripts/bootstrap-datetimepicker.js"></script>
 </body>
 
 </html>
