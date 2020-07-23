@@ -54,12 +54,10 @@ public class AccountController extends BaseController {
     }
 
     @PostMapping(value = "/addTransaction")
-    public TransactionDto addTransaction(Transaction transaction, Integer account_id) {
+    public Transaction addTransaction(Transaction transaction, Integer account_id) {
         Account account = (accountService.findAccountById(account_id));
         transaction.setAccount(account);
         transactionService.addTransaction(transaction);
-        TransactionDto transactionDto = new TransactionDto(transaction);
-
-        return transactionDto;
+        return transaction;
     }
 }

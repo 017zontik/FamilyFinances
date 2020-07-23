@@ -108,12 +108,12 @@
 
                     <h1 class="h2">Dashboard</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
-                        <div class="btn-group mr-2">
+                        <div class="btn-group mr-2" style="display:none" id="buttonAddTransaction">
                             <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal"
                                     data-target="#transactionModal" href="#transactionModal">Add
                             </button>
                         </div>
-                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" style="display:none">
                             <span data-feather="calendar"></span>
                             This week
                         </button>
@@ -184,7 +184,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" class="form-signin">
+                <form method="post" class="form-signin" id="newTransaction">
 
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -197,16 +197,16 @@
                     </div>
                     <div class="form-label-group" id="transactionDateTimePicker">
                         <label for="name" class="col-form-label">Date of transaction:</label>
-                        <input type="text" class="form-control form_datetime" >
+                        <input type="text" class="form-control form_datetime" id="dateTransaction">
                     </div>
 
                     <div class="form-label-group">
                         <label for="name" class="col-form-label">Transaction name:</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" id="nameTransaction" required>
                     </div>
                     <div class="form-label-group">
                         <label for="name" class="col-form-label">Amount:</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" id="amount" required>
                     </div>
                 </form>
                 <br/>

@@ -1,5 +1,7 @@
 /* globals Chart:false, feather:false */
 
+
+
 (function () {
     'use strict'
 
@@ -44,9 +46,58 @@
         $("#transactions").remove();
         $transactionsClone.attr("id", "transactions");
         $("main").append($transactionsClone);
+        updateTransactions($account.attr("data"), $transactionsClone);
+        $transactionsClone.show();
+        $("#buttonAddTransaction").show();
+    })
+
+
+    $("#transactionTypeDropDownMenu a").click(function (clickTransactionTypeEvent) {
+        console.log("dropdownMenu");
+        let transactionType = $(clickTransactionTypeEvent.target).text();
+        $("#dropdownMenuButton").text(transactionType);
+    })
+
+    let transactionDate=new Date();
+    $(function () {
+        $('#transactionDateTimePicker input')
+            .datetimepicker(
+                {
+                    autoclose: true,
+                    format: "dd MM yyyy - hh:ii"
+                }).datetimepicker("update", new Date()).on("changeDate", function (ev) {
+                    transactionDate=ev.date;
+        })
+
+    });
+
+
+
+    $("#saveTransaction").click(function () {
+        if ($("#newTransaction")[0].reportValidity()) {
+        $.ajax("addTransaction", {
+            type: "POST",
+            data: {
+                date: transactionDate.toJSON(),
+                name: $("#nameTransaction").val(),
+                amount: $("#amount").val(),
+                account_id: $(".highlight-account").attr("data")
+            },
+            statusCode: {
+                200: function (response) {
+                    $("#transactionModal").modal("hide");
+                    updateTransactions($(".highlight-account").attr("data"), $("#transactions"));
+
+
+                }
+            }
+        })
+        }
+    })
+    function updateTransactions(accountId, $transactionsElement) {
         $.ajax("transactions", {
             type: "GET",
-            data: {accountId: $account.attr("data")},
+            data: {accountId: accountId},
             statusCode: {
                 200: function (response) {
                     $.each(response, function (index, value) {
@@ -57,29 +108,12 @@
                         $row.append($nameColumn);
                         let $amountColumn = $("<td>").text((value.amount).toFixed(2));
                         $row.append($amountColumn);
-                        $("table tbody", $transactionsClone).append($row);
+                        $("table tbody", $transactionsElement).append($row);
                     })
                 }
             }
         })
-        $transactionsClone.show();
-    })
-
-
-    $("#transactionTypeDropDownMenu a").click(function (clickTransactionTypeEvent) {
-        let transactionType=$(clickTransactionTypeEvent.target).text();
-        $("#dropdownMenuButton").text(transactionType);
-    })
-
-    $(function(){
-        $('#transactionDateTimePicker input')
-            .datetimepicker(
-                {
-                    autoclose: true,
-                    format: "dd MM yyyy - hh:ii"
-                }).datetimepicker("update", new Date());
-    });
-
+    }
 
 }())
 
