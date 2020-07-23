@@ -78,7 +78,7 @@
         $.ajax("addTransaction", {
             type: "POST",
             data: {
-                date: transactionDate.toJSON(),
+                date: transactionDate,
                 name: $("#nameTransaction").val(),
                 amount: $("#amount").val(),
                 account_id: $(".highlight-account").attr("data")
@@ -100,6 +100,7 @@
             data: {accountId: accountId},
             statusCode: {
                 200: function (response) {
+                    $("table tbody tr", $transactionsElement).remove();
                     $.each(response, function (index, value) {
                         let $row = $("<tr>");
                         let $dateColumn = $("<td>").text(value.date);
