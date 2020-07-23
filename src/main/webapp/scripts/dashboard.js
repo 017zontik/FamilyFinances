@@ -71,7 +71,14 @@
         $("#dropdownMenuButton").text(transactionType);
     })
 
-
+    $(function(){
+        $('#transactionDateTimePicker input')
+            .datetimepicker(
+                {
+                    autoclose: true,
+                    format: "dd MM yyyy - hh:ii"
+                }).datetimepicker("update", new Date());
+    });
 
 
 }())
