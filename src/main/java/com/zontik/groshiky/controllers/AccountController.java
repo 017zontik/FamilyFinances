@@ -1,9 +1,6 @@
 package com.zontik.groshiky.controllers;
 
-import com.zontik.groshiky.model.Account;
-import com.zontik.groshiky.model.AccountModel;
-import com.zontik.groshiky.model.Transaction;
-import com.zontik.groshiky.model.TransactionDto;
+import com.zontik.groshiky.model.*;
 import com.zontik.groshiky.service.IAccountService;
 import com.zontik.groshiky.service.ITransactionService;
 import com.zontik.groshiky.service.IUserService;
@@ -56,8 +53,7 @@ public class AccountController extends BaseController {
     @PostMapping(value = "/addTransaction")
     public Transaction addTransaction(Transaction transaction, Integer account_id) {
         Account account = (accountService.findAccountById(account_id));
-        transaction.setAccount(account);
-        transactionService.addTransaction(transaction);
+        transactionService.addTransaction(transaction, account);
         return transaction;
     }
 }
