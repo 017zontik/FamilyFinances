@@ -1,7 +1,6 @@
 /* globals Chart:false, feather:false */
 
 
-
 (function () {
     'use strict'
 
@@ -51,14 +50,15 @@
         $("#buttonAddTransaction").show();
     })
 
-
+    let transactionType = 0;
     $("#transactionTypeDropDownMenu a").click(function (clickTransactionTypeEvent) {
-        console.log("dropdownMenu");
-        let transactionType = $(clickTransactionTypeEvent.target).text();
-        $("#dropdownMenuButton").text(transactionType);
+        let transactionTypeName = $(clickTransactionTypeEvent.target).text();
+        $("#dropdownMenuButton").text(transactionTypeName);
+        transactionType = $(clickTransactionTypeEvent.target).attr("data-transaction-type");
     })
 
-    let transactionDate=new Date();
+
+    let transactionDate = new Date();
     $(function () {
         $('#transactionDateTimePicker input')
             .datetimepicker(
@@ -66,34 +66,35 @@
                     autoclose: true,
                     format: "dd MM yyyy - hh:ii"
                 }).datetimepicker("update", new Date()).on("changeDate", function (ev) {
-                    transactionDate=ev.date;
+            transactionDate = ev.date;
         })
 
     });
 
 
-
     $("#saveTransaction").click(function () {
         if ($("#newTransaction")[0].reportValidity()) {
-        $.ajax("addTransaction", {
-            type: "POST",
-            data: {
-                date: transactionDate,
-                name: $("#nameTransaction").val(),
-                amount: $("#amount").val(),
-                account_id: $(".highlight-account").attr("data")
-            },
-            statusCode: {
-                200: function (response) {
-                    $("#transactionModal").modal("hide");
-                    updateTransactions($(".highlight-account").attr("data"), $("#transactions"));
+            $.ajax("addTransaction", {
+                type: "POST",
+                data: {
+                    date: transactionDate,
+                    name: $("#nameTransaction").val(),
+                    amount: $("#amount").val(),
+                    account_id: $(".highlight-account").attr("data"),
+                    type_transactions: transactionType
+                },
+                statusCode: {
+                    200: function (response) {
+                        $("#transactionModal").modal("hide");
+                        updateTransactions($(".highlight-account").attr("data"), $("#transactions"));
+                        updateAccount($(".highlight-account").attr("data"));
 
-
+                    }
                 }
-            }
-        })
+            })
         }
     })
+
     function updateTransactions(accountId, $transactionsElement) {
         $.ajax("transactions", {
             type: "GET",
@@ -108,6 +109,11 @@
                         let $nameColumn = $("<td>").text(value.name);
                         $row.append($nameColumn);
                         let $amountColumn = $("<td>").text((value.amount).toFixed(2));
+                        if(value.amount<0){
+                            $amountColumn.addClass("negative-balance");
+                        }else{
+                            $amountColumn.addClass("positive-balance");
+                        }
                         $row.append($amountColumn);
                         $("table tbody", $transactionsElement).append($row);
                     })
@@ -115,6 +121,20 @@
             }
         })
     }
+
+
+    function updateAccount(accountId) {
+        $.ajax("account", {
+            type: "GET",
+            data: {id: accountId},
+            statusCode: {
+                200: function(response) {
+                    $(".text-success strong", ".highlight-account").text(response.balance + " BYN");
+                }
+            }
+        })
+    }
+
 
 }())
 

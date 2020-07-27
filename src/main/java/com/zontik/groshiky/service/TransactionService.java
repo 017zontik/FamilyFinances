@@ -20,10 +20,11 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public Transaction addTransaction(Transaction transaction, Account account) {
-        if(transaction.getType_transactions()== TypeTransactions.INCOME){
+        if(transaction.getType_transactions() == TypeTransactions.INCOME){
             account.setBalance(account.getBalance() + transaction.getAmount());
         }else{
-            account.setBalance(account.getBalance() - transaction.getAmount());
+            transaction.setAmount(transaction.getAmount()*(-1));
+            account.setBalance(account.getBalance() + transaction.getAmount());
         }
         transaction.setAccount(account);
         return transactionRepository.save(transaction);
