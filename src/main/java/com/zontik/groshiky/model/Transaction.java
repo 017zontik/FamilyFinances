@@ -29,6 +29,10 @@ public class Transaction {
     @Column
     private Float amount;
 
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private TypeTransactions type_transactions;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id", nullable = false)
