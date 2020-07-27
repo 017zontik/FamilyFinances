@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.*;
 
 @RestController("/dashboard")
@@ -55,5 +54,11 @@ public class AccountController extends BaseController {
         Account account = (accountService.findAccountById(account_id));
         transactionService.addTransaction(transaction, account);
         return transaction;
+    }
+
+    @GetMapping(value = "/account")
+    public AccountModel getAccount(Integer id){
+      AccountModel account = new AccountModel(accountService.findAccountById(id));
+      return account;
     }
 }
