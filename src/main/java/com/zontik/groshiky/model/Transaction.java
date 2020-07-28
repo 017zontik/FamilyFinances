@@ -29,9 +29,9 @@ public class Transaction {
     @Column
     private Float amount;
 
-    @Column(nullable = false)
+    @Column(name="type_transactions", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private TypeTransactions type_transactions;
+    private TypeTransactions typeTransactions;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
