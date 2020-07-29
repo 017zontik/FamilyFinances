@@ -50,11 +50,11 @@
         $("#buttonAddTransaction").show();
     })
 
-    let typeTransaction = null;
+    let transactionType = null;
     $("#transactionTypeDropDownMenu a").click(function (clickTransactionTypeEvent) {
         let transactionTypeName = $(clickTransactionTypeEvent.target).text();
         $("#dropdownMenuButton").text(transactionTypeName);
-        typeTransaction = $(clickTransactionTypeEvent.target).attr("data-transaction-type");
+        transactionType = $(clickTransactionTypeEvent.target).attr("data-transaction-type");
     })
 
 
@@ -73,7 +73,7 @@
 
 
     $("#saveTransaction").click(function () {
-        if ((typeTransaction != null) && ($("#newTransaction")[0].reportValidity())) {
+        if ((transactionType != null) && ($("#newTransaction")[0].reportValidity())) {
             $.ajax("addTransaction", {
                 type: "POST",
                 data: {
@@ -81,7 +81,7 @@
                     name: $("#transactionName").val(),
                     amount: $("#amount").val(),
                     account_id: $(".highlight-account").attr("data"),
-                    transactionType: typeTransaction
+                    transactionType: transactionType
                 },
                 statusCode: {
                     200: function (response) {
@@ -91,14 +91,14 @@
                     }
                 }
             })
-        } else if (!typeTransaction) {
+        } else if (!transactionType) {
             $("#typeTransactionError").text("Select type of transaction").show();
         }
     })
 
     $("#transactionModal").on("show.bs.modal", function () {
         $("#typeTransactionError").hide();
-        typeTransaction=null;
+        transactionType=null;
         $("#dropdownMenuButton").text("Type of transaction");
         $("#transactionName").val(null);
         $("#amount").val(null);
