@@ -81,7 +81,7 @@
                     name: $("#nameTransaction").val(),
                     amount: $("#amount").val(),
                     account_id: $(".highlight-account").attr("data"),
-                    typeTransactions: transactionType
+                    transactionType: transactionType
                 },
                 statusCode: {
                     200: function (response) {
