@@ -64,7 +64,7 @@
                                             <strong th:text="${account.name}"/>
 
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 account-balance" >
                                             <span th:if="${account.balance} < '0'" class="text-danger">
                                                 <strong th:text="${#numbers.formatDecimal(account.balance,1,2)} + ' BYN'">
                                                 </strong></span>
@@ -195,6 +195,8 @@
                             <a class="dropdown-item" href="#" data-transaction-type="EXPENSE">Expense</a>
                         </div>
                     </div>
+                    <div class="alert alert-danger" style="display:none" role="alert"
+                         id="typeTransactionError"></div>
                     <div class="form-label-group" id="transactionDateTimePicker">
                         <label for="name" class="col-form-label" >Date of transaction:</label>
                         <input type="text" class="form-control form_datetime" id="dateTransaction">

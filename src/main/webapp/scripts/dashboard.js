@@ -50,7 +50,7 @@
         $("#buttonAddTransaction").show();
     })
 
-    let transactionType = 0;
+    let transactionType = null;
     $("#transactionTypeDropDownMenu a").click(function (clickTransactionTypeEvent) {
         let transactionTypeName = $(clickTransactionTypeEvent.target).text();
         $("#dropdownMenuButton").text(transactionTypeName);
@@ -73,7 +73,7 @@
 
 
     $("#saveTransaction").click(function () {
-        if ($("#newTransaction")[0].reportValidity()) {
+        if ((transactionType != null) && ($("#newTransaction")[0].reportValidity())) {
             $.ajax("addTransaction", {
                 type: "POST",
                 data: {
@@ -81,18 +81,27 @@
                     name: $("#nameTransaction").val(),
                     amount: $("#amount").val(),
                     account_id: $(".highlight-account").attr("data"),
-                    type_transactions: transactionType
+                    typeTransactions: transactionType
                 },
                 statusCode: {
                     200: function (response) {
                         $("#transactionModal").modal("hide");
                         updateTransactions($(".highlight-account").attr("data"), $("#transactions"));
                         updateAccount($(".highlight-account").attr("data"));
-
                     }
                 }
             })
+        } else if (!transactionType) {
+            $("#typeTransactionError").text("Select type of transaction").show();
         }
+    })
+
+    $("#transactionModal").on("show.bs.modal", function () {
+        $("#typeTransactionError").hide();
+        transactionType=null;
+        $("#dropdownMenuButton").text("Type of transaction");
+        $("#nameTransaction").val(null);
+        $("#amount").val(null);
     })
 
     function updateTransactions(accountId, $transactionsElement) {
@@ -109,9 +118,9 @@
                         let $nameColumn = $("<td>").text(value.name);
                         $row.append($nameColumn);
                         let $amountColumn = $("<td>").text((value.amount).toFixed(2));
-                        if(value.amount<0){
+                        if (value.amount < 0) {
                             $amountColumn.addClass("negative-balance");
-                        }else{
+                        } else {
                             $amountColumn.addClass("positive-balance");
                         }
                         $row.append($amountColumn);
@@ -128,8 +137,13 @@
             type: "GET",
             data: {id: accountId},
             statusCode: {
-                200: function(response) {
-                    $(".text-success strong", ".highlight-account").text(response.balance + " BYN");
+                200: function (response) {
+                    let accountBalance = $(".account-balance",".highlight-account").text((response.balance).toFixed(2) + " BYN");
+                    if(response.balance < 0){
+                        accountBalance.addClass("text-danger");
+                    }else{
+                        accountBalance.addClass("text-success");
+                    }
                 }
             }
         })
