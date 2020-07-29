@@ -1,11 +1,13 @@
 package com.zontik.groshiky.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Builder
@@ -19,7 +21,7 @@ public class Transaction {
     private Integer id;
 
     @Column
-    private LocalDateTime date;
+    private Date date;
 
     @Column
     private String name;
@@ -27,6 +29,11 @@ public class Transaction {
     @Column
     private Float amount;
 
+    @Column(name="type", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private TransactionType transactionType;
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;

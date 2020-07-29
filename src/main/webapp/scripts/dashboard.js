@@ -1,5 +1,6 @@
 /* globals Chart:false, feather:false */
 
+
 (function () {
     'use strict'
 
@@ -44,11 +45,72 @@
         $("#transactions").remove();
         $transactionsClone.attr("id", "transactions");
         $("main").append($transactionsClone);
+        updateTransactions($account.attr("data"), $transactionsClone);
+        $transactionsClone.show();
+        $("#buttonAddTransaction").show();
+    })
+
+    let transactionType = null;
+    $("#transactionTypeDropDownMenu a").click(function (clickTransactionTypeEvent) {
+        let transactionTypeName = $(clickTransactionTypeEvent.target).text();
+        $("#dropdownMenuButton").text(transactionTypeName);
+        transactionType = $(clickTransactionTypeEvent.target).attr("data-transaction-type");
+    })
+
+
+    let transactionDate = new Date();
+    $(function () {
+        $('#transactionDateTimePicker input')
+            .datetimepicker(
+                {
+                    autoclose: true,
+                    format: "dd MM yyyy - hh:ii"
+                }).datetimepicker("update", new Date()).on("changeDate", function (ev) {
+            transactionDate = ev.date;
+        })
+
+    });
+
+
+    $("#saveTransaction").click(function () {
+        if ((transactionType != null) && ($("#newTransaction")[0].reportValidity())) {
+            $.ajax("addTransaction", {
+                type: "POST",
+                data: {
+                    date: transactionDate,
+                    name: $("#transactionName").val(),
+                    amount: $("#amount").val(),
+                    account_id: $(".highlight-account").attr("data"),
+                    transactionType: transactionType
+                },
+                statusCode: {
+                    200: function (response) {
+                        $("#transactionModal").modal("hide");
+                        updateTransactions($(".highlight-account").attr("data"), $("#transactions"));
+                        updateAccount($(".highlight-account").attr("data"));
+                    }
+                }
+            })
+        } else if (!transactionType) {
+            $("#typeTransactionError").text("Select type of transaction").show();
+        }
+    })
+
+    $("#transactionModal").on("show.bs.modal", function () {
+        $("#typeTransactionError").hide();
+        transactionType=null;
+        $("#dropdownMenuButton").text("Type of transaction");
+        $("#transactionName").val(null);
+        $("#amount").val(null);
+    })
+
+    function updateTransactions(accountId, $transactionsElement) {
         $.ajax("transactions", {
             type: "GET",
-            data: {accountId: $account.attr("data")},
+            data: {accountId: accountId},
             statusCode: {
                 200: function (response) {
+                    $("table tbody tr", $transactionsElement).remove();
                     $.each(response, function (index, value) {
                         let $row = $("<tr>");
                         let $dateColumn = $("<td>").text(value.date);
@@ -56,14 +118,36 @@
                         let $nameColumn = $("<td>").text(value.name);
                         $row.append($nameColumn);
                         let $amountColumn = $("<td>").text((value.amount).toFixed(2));
+                        if (value.amount < 0) {
+                            $amountColumn.addClass("negative-balance");
+                        } else {
+                            $amountColumn.addClass("positive-balance");
+                        }
                         $row.append($amountColumn);
-                        $("table tbody", $transactionsClone).append($row);
+                        $("table tbody", $transactionsElement).append($row);
                     })
                 }
             }
         })
-        $transactionsClone.show();
-    })
+    }
+
+
+    function updateAccount(accountId) {
+        $.ajax("account", {
+            type: "GET",
+            data: {id: accountId},
+            statusCode: {
+                200: function (response) {
+                    let accountBalance = $(".account-balance",".highlight-account").text((response.balance).toFixed(2) + " BYN");
+                    if(response.balance < 0){
+                        accountBalance.addClass("text-danger");
+                    }else{
+                        accountBalance.addClass("text-success");
+                    }
+                }
+            }
+        })
+    }
 
 
 }())

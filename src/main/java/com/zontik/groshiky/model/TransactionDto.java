@@ -1,7 +1,7 @@
 package com.zontik.groshiky.model;
 
 import lombok.Data;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
 
 @Data
 public class TransactionDto {
@@ -10,11 +10,11 @@ public class TransactionDto {
     private String name;
     private Float amount;
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     public TransactionDto(Transaction transaction) {
         this.id = transaction.getId();
-        this.date = (transaction.getDate()).format(formatter);
+        this.date = formatter.format(transaction.getDate());
         this.name = transaction.getName();
         this.amount = transaction.getAmount();
     }
