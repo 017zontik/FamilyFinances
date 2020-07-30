@@ -124,8 +124,11 @@
                             $amountColumn.addClass("positive-balance");
                         }
                         $row.append($amountColumn);
+                        let $deleteTransaction =$("<td>").append($("<a type='button' class='btn d-flex align-items-center text-muted'>").append($("<span data-feather='minus-circle'>")));
+                        $row.append($deleteTransaction);
                         $("table tbody", $transactionsElement).append($row);
                     })
+                    feather.replace();
                 }
             }
         })
