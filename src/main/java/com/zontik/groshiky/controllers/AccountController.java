@@ -61,4 +61,9 @@ public class AccountController extends BaseController {
       AccountModel account = new AccountModel(accountService.findAccountById(id));
       return account;
     }
+
+    @GetMapping(value = "/deleteTransaction")
+    public void deleteTransaction(Integer id){
+        transactionService.deleteById(id);
+    }
 }

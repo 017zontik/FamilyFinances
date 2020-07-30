@@ -98,12 +98,13 @@
 
     $("#transactionModal").on("show.bs.modal", function () {
         $("#typeTransactionError").hide();
-        transactionType=null;
+        transactionType = null;
         $("#dropdownMenuButton").text("Type of transaction");
         $("#transactionName").val(null);
         $("#amount").val(null);
     })
 
+    let $transactionId = 0;
     function updateTransactions(accountId, $transactionsElement) {
         $.ajax("transactions", {
             type: "GET",
@@ -113,6 +114,7 @@
                     $("table tbody tr", $transactionsElement).remove();
                     $.each(response, function (index, value) {
                         let $row = $("<tr>");
+                        $row.attr("id", value.id);
                         let $dateColumn = $("<td>").text(value.date);
                         $row.append($dateColumn);
                         let $nameColumn = $("<td>").text(value.name);
@@ -124,11 +126,20 @@
                             $amountColumn.addClass("positive-balance");
                         }
                         $row.append($amountColumn);
-                        let $deleteTransaction =$("<td>").append($("<a type='button' class='btn d-flex align-items-center text-muted'>").append($("<span data-feather='minus-circle'>")));
+                        let $deleteTransaction = $("<td>").append($("<a type='button' " +
+                            "class='btn d-flex align-items-center text-muted ' delete-transaction" +
+                            " href='#'>")
+                            .append($("<span data-feather='minus-circle'>")));
                         $row.append($deleteTransaction);
+
                         $("table tbody", $transactionsElement).append($row);
                     })
                     feather.replace();
+                    $("[delete-transaction]").click(function (deleteTransactionEvent) {
+                        $transactionId = $(deleteTransactionEvent.target.closest("tr")).attr("id");
+                        $("#deleteTransaction").modal("show");
+                    })
+
                 }
             }
         })
@@ -141,10 +152,10 @@
             data: {id: accountId},
             statusCode: {
                 200: function (response) {
-                    let accountBalance = $(".account-balance",".highlight-account").text((response.balance).toFixed(2) + " BYN");
-                    if(response.balance < 0){
+                    let accountBalance = $(".account-balance", ".highlight-account").text((response.balance).toFixed(2) + " BYN");
+                    if (response.balance < 0) {
                         accountBalance.addClass("text-danger");
-                    }else{
+                    } else {
                         accountBalance.addClass("text-success");
                     }
                 }
@@ -152,6 +163,21 @@
         })
     }
 
+
+
+    $("#deleteThisTransaction").click(function () {
+        $("#deleteTransaction").modal("hide");
+        $.ajax("/deleteTransaction", {
+            type: "GET",
+            data: {id: $transactionId},
+            statusCode: {
+                200: function () {
+                    updateTransactions($(".highlight-account").attr("data"));
+                    updateAccount($(".highlight-account").attr("data"));
+                }
+            }
+        })
+    })
 
 }())
 
