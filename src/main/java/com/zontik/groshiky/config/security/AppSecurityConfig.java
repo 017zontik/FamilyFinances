@@ -45,6 +45,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("login")
                 .defaultSuccessUrl("/dashboard")
                 .and()
+                .logout().logoutSuccessUrl("/")
+                .and()
                 .csrf().disable();
+
     }
 }
