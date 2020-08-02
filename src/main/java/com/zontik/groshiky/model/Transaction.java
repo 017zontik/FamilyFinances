@@ -27,7 +27,7 @@ public class Transaction {
     private String name;
 
     @Column
-    private Float amount;
+    private Double amount;
 
     @Column(name="type", nullable = false)
     @Enumerated(value = EnumType.STRING)

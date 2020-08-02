@@ -8,7 +8,7 @@ public class TransactionDto {
     private Integer id;
     private String date;
     private String name;
-    private Float amount;
+    private Double amount;
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 

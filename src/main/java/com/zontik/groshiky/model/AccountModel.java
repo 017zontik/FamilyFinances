@@ -6,7 +6,7 @@ import lombok.Data;
 public class AccountModel {
     private String name;
     private Integer id;
-    private Float balance;
+    private Double balance;
 
     public AccountModel(Account account) {
         this.id = account.getId();

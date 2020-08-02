@@ -7,9 +7,8 @@ import com.zontik.groshiky.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.*;
 
 @RestController("/dashboard")
@@ -62,8 +61,8 @@ public class AccountController extends BaseController {
       return account;
     }
 
-    @GetMapping(value = "/deleteTransaction")
-    public void deleteTransaction(Integer id){
+    @DeleteMapping(value = "/deleteTransaction")
+    public void deleteTransaction(@RequestParam Integer id){
         transactionService.deleteTransactionById(id);
     }
 }

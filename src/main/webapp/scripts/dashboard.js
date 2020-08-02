@@ -168,7 +168,7 @@
     $("#deleteThisTransaction").click(function () {
         $("#deleteTransaction").modal("hide");
         $.ajax("/deleteTransaction", {
-            type: "GET",
+            type: "DELETE",
             data: {id: $transactionId},
             statusCode: {
                 200: function () {
