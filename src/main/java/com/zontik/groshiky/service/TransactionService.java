@@ -33,7 +33,7 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void deleteTransactionById(Integer id) {
         Transaction transaction= transactionRepository.getOne(id);
         Account account = transaction.getAccount();
         if(transaction.getTransactionType()==TransactionType.INCOME){
