@@ -64,6 +64,6 @@ public class AccountController extends BaseController {
 
     @GetMapping(value = "/deleteTransaction")
     public void deleteTransaction(Integer id){
-        transactionService.deleteById(id);
+        transactionService.deleteTransactionById(id);
     }
 }
