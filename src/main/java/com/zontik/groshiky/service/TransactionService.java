@@ -6,8 +6,10 @@ import com.zontik.groshiky.model.TransactionType;
 import com.zontik.groshiky.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class TransactionService implements ITransactionService {
 
     private final TransactionRepository transactionRepository;
