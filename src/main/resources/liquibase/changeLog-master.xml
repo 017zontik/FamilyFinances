@@ -12,8 +12,6 @@
     <include file="/liquibase/changelog_4.xml"/>
     <include file="/liquibase/changelog_5.xml"/>
     <include file="/liquibase/changelog_6.xml"/>
-    <include file="/liquibase/changelog_7.xml"/>
-    <include file="/liquibase/changelog_8.xml"/>
     <include file="/liquibase/changelog_9.xml"/>
     <include file="/liquibase/changelog_10.xml"/>
     <include file="/liquibase/changelog_11.xml"/>

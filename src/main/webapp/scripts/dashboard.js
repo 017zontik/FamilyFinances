@@ -21,6 +21,7 @@
                         $(".text-danger", $accountClone).hide();
                         $("#accountsList").append($accountClone);
                         $accountClone.show();
+                        location.reload();
                     },
                     400: function (response) {
                         $("#accountErrorMessage").text(response.responseText).show();
@@ -152,12 +153,18 @@
             data: {id: accountId},
             statusCode: {
                 200: function (response) {
-                    let accountBalance = $(".account-balance", ".highlight-account").text((response.balance).toFixed(2) + " BYN");
+                    let accountBalance = $(".account-balance", ".highlight-account");
+                    accountBalance.removeClass("text-danger", "text-seccess");
                     if (response.balance < 0) {
+
                         accountBalance.addClass("text-danger");
+                        accountBalance.text((response.balance).toFixed(2) + " BYN");
                     } else {
                         accountBalance.addClass("text-success");
+                        accountBalance.text((response.balance).toFixed(2) + " BYN");
                     }
+
+
                 }
             }
         })

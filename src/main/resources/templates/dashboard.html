@@ -65,13 +65,9 @@
 
                                         </div>
                                         <div class="col-md-4 account-balance">
-                                            <span th:if="${account.balance} < '0'" class="text-danger">
+                                            <span th:class="${account.balance} < '0' ?'text-danger':'text-success'" >
                                                 <strong th:text="${#numbers.formatDecimal(account.balance,1,2)} + ' BYN'">
                                                 </strong></span>
-
-                                            <span th:unless="${account.balance} < '0'" class="text-success">
-                                                <strong th:text="${#numbers.formatDecimal(account.balance,1,2)} + ' BYN'">
-                                               </strong></span>
                                         </div>
                                     </div>
                                 </a>

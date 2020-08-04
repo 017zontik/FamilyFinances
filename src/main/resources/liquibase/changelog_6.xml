@@ -14,7 +14,7 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="date" type="DATETIME">
-                <constraints unique="true"/>
+
             </column>
             <column name="name" type="VARCHAR(255)">
             </column>
