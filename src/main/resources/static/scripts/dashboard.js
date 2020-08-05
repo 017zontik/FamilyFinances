@@ -6,6 +6,10 @@
 
     feather.replace();
 
+    $(function () {
+        $("#accountsList li a").eq(0).click();
+    })
+
     $("#saveAccount").click(function () {
         if ($("#newAccount")[0].reportValidity()) {
             $.ajax("addAccount", {
@@ -163,8 +167,6 @@
                         accountBalance.addClass("text-success");
                         accountBalance.text((response.balance).toFixed(2) + " BYN");
                     }
-
-
                 }
             }
         })
