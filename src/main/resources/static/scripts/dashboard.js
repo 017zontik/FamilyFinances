@@ -131,12 +131,16 @@
                             $amountColumn.addClass("positive-balance");
                         }
                         $row.append($amountColumn);
+                        let $editTransaction = $("<td>").append($("<a type='button' " +
+                            "class='btn d-flex align-items-center text-muted ' edit-transaction" +
+                            " href='#'>")
+                            .append($("<span data-feather='edit'>")));
+                        $row.append($editTransaction);
                         let $deleteTransaction = $("<td>").append($("<a type='button' " +
                             "class='btn d-flex align-items-center text-muted ' delete-transaction" +
                             " href='#'>")
-                            .append($("<span data-feather='minus-circle'>")));
+                            .append($("<span data-feather='trash-2'>")));
                         $row.append($deleteTransaction);
-
                         $("table tbody", $transactionsElement).append($row);
                     })
                     feather.replace();
@@ -144,7 +148,6 @@
                         $transactionId = $(deleteTransactionEvent.target.closest("tr")).attr("id");
                         $("#deleteTransaction").modal("show");
                     })
-
                 }
             }
         })
