@@ -9,6 +9,7 @@ public class TransactionDto {
     private String date;
     private String name;
     private Double amount;
+    private TransactionType type;
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -17,5 +18,6 @@ public class TransactionDto {
         this.date = formatter.format(transaction.getDate());
         this.name = transaction.getName();
         this.amount = transaction.getAmount();
+        this.type = transaction.getTransactionType();
     }
 }

@@ -44,5 +44,10 @@ public class TransactionService implements ITransactionService {
         transactionRepository.deleteById(id);
     }
 
+    @Override
+    public Transaction findTransactionById(Integer id) {
+        return transactionRepository.getOne(id);
+    }
+
 
 }

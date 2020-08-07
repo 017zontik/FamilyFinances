@@ -61,6 +61,12 @@ public class AccountController extends BaseController {
       return account;
     }
 
+    @GetMapping(value = "/transaction")
+    public TransactionDto getTransaction(Integer id){
+        TransactionDto dto = new TransactionDto(transactionService.findTransactionById(id));
+        return dto;
+    }
+
     @DeleteMapping(value = "/deleteTransaction")
     public void deleteTransaction(@RequestParam Integer id){
         transactionService.deleteTransactionById(id);
