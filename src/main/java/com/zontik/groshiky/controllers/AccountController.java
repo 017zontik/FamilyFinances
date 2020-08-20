@@ -71,4 +71,10 @@ public class AccountController extends BaseController {
     public void deleteTransaction(@RequestParam Integer id){
         transactionService.deleteTransactionById(id);
     }
+
+    @PutMapping(value = "/updateTransaction")
+    public Transaction updateTransaction( Integer id, Transaction transaction, Integer account_id) {
+        Account account = (accountService.findAccountById(account_id));
+        return transactionService.editTransaction(account, id, transaction);
+    }
 }

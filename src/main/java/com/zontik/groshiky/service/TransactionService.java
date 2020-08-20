@@ -22,10 +22,10 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public Transaction addTransaction(Transaction transaction, Account account) {
-        if(transaction.getTransactionType() == TransactionType.INCOME){
+        if(transaction.getTransactionType() == TransactionType.INCOME) {
             account.setBalance(account.getBalance() + transaction.getAmount());
-        }else{
-            transaction.setAmount(transaction.getAmount()*(-1));
+        } else {
+            transaction.setAmount(transaction.getAmount() * (-1));
             account.setBalance(account.getBalance() + transaction.getAmount());
         }
         transaction.setAccount(account);
@@ -34,12 +34,12 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public void deleteTransactionById(Integer id) {
-        Transaction transaction= transactionRepository.getOne(id);
+        Transaction transaction = transactionRepository.getOne(id);
         Account account = transaction.getAccount();
-        if(transaction.getTransactionType()==TransactionType.INCOME){
-            account.setBalance(account.getBalance()-transaction.getAmount());
-        }else{
-            account.setBalance(account.getBalance()-transaction.getAmount());
+        if (transaction.getTransactionType() == TransactionType.INCOME) {
+            account.setBalance(account.getBalance() - transaction.getAmount());
+        } else {
+            account.setBalance(account.getBalance() - transaction.getAmount());
         }
         transactionRepository.deleteById(id);
     }
@@ -49,5 +49,15 @@ public class TransactionService implements ITransactionService {
         return transactionRepository.getOne(id);
     }
 
-
+    @Override
+    public Transaction editTransaction(Account account, Integer id, Transaction transaction) {
+        Transaction tr = transactionRepository.getOne(id);
+        tr.setId(id);
+        tr.setTransactionType(transaction.getTransactionType());
+        tr.setName(transaction.getName());
+        tr.setDate(transaction.getDate());
+        tr.setAmount(transaction.getAmount());
+        tr.setAccount(account);
+        return transactionRepository.save(tr);
+    }
 }
