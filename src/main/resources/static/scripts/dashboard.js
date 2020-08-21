@@ -77,7 +77,7 @@
     });
 
 
-    $("#saveTransaction").click(function () {
+    function addTransaction() {
         if ((transactionType != null) && ($("#newTransaction")[0].reportValidity())) {
             $.ajax("addTransaction", {
                 type: "POST",
@@ -99,6 +99,38 @@
         } else if (!transactionType) {
             $("#typeTransactionError").text("Select type of transaction").show();
         }
+    }
+
+    function editTransactions() {
+        $.ajax("updateTransaction", {
+            type: "PUT",
+            data: {
+                id: $transactionId,
+                date: transactionDate,
+                name: $("#transactionName").val(),
+                amount: $("#amount").val(),
+                account_id: $(".highlight-account").attr("data"),
+                transactionType: transactionType
+            },
+            statusCode: {
+                200: function (response) {
+                    $("#transactionModal").modal("hide");
+                    updateTransactions($(".highlight-account").attr("data"), $("#transactions"));
+                    updateAccount($(".highlight-account").attr("data"));
+
+                }
+            }
+
+        })
+    }
+
+    $("#saveTransaction").click(function () {
+        if($newTransaction === false){
+            editTransactions();
+            $newTransaction = true;
+        }else{
+            addTransaction();
+        }
     })
 
     $("#transactionModal").on("show.bs.modal", function () {
@@ -110,6 +142,7 @@
     })
 
     let $transactionId = 0;
+
     function updateTransactions(accountId, $transactionsElement) {
         $.ajax("transactions", {
             type: "GET",
@@ -120,12 +153,13 @@
                     $.each(response, function (index, value) {
                         let $row = $("<tr>");
                         $row.attr("id", value.id);
+                        $row.attr("type", value.type);
                         let $dateColumn = $("<td>").text(value.date);
                         $row.append($dateColumn);
                         let $nameColumn = $("<td>").text(value.name);
                         $row.append($nameColumn);
                         let $amountColumn = $("<td>").text((value.amount).toFixed(2));
-                        if (value.amount < 0) {
+                        if (value.amount < 0 || value.type === "EXPENSE") {
                             $amountColumn.addClass("negative-balance");
                         } else {
                             $amountColumn.addClass("positive-balance");
@@ -147,11 +181,35 @@
                     $("[delete-transaction]").click(function (deleteTransactionEvent) {
                         $transactionId = $(deleteTransactionEvent.target.closest("tr")).attr("id");
                         $("#deleteTransaction").modal("show");
+
                     })
+                    $("[edit-transaction]").click(editTransaction);
                 }
             }
         })
     }
+
+   let $newTransaction = true;
+
+    function editTransaction(editTransactionEvent) {
+        $transactionId = $(editTransactionEvent.target.closest("tr")).attr("id");
+        $.ajax("transaction", {
+            type: "GET",
+            data: {id: $transactionId},
+            statusCode: {
+                200: function (response) {
+                    $("#transactionModal").modal("show");
+                    $("#typeTransactionError").hide();
+                    $("#dropdownMenuButton").text(response.type);
+                    $("#dateTransaction").val(response.date);
+                    $("#transactionName").val(response.name);
+                    $("#amount").val(response.amount);
+                    $newTransaction = false;
+                }
+            }
+        })
+    }
+
 
 
     function updateAccount(accountId) {
@@ -163,7 +221,6 @@
                     let accountBalance = $(".account-balance", ".highlight-account");
                     accountBalance.removeClass("text-danger", "text-seccess");
                     if (response.balance < 0) {
-
                         accountBalance.addClass("text-danger");
                         accountBalance.text((response.balance).toFixed(2) + " BYN");
                     } else {
@@ -190,6 +247,7 @@
             }
         })
     })
+
 
 }())
 

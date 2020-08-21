@@ -3,6 +3,7 @@ package com.zontik.groshiky.service;
 import com.zontik.groshiky.model.Account;
 import com.zontik.groshiky.model.Transaction;
 import com.zontik.groshiky.model.TransactionType;
+import com.zontik.groshiky.repository.AccountRepository;
 import com.zontik.groshiky.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class TransactionService implements ITransactionService {
 
     private final TransactionRepository transactionRepository;
-
+    private final AccountRepository accountRepository;
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository) {
+    public TransactionService(TransactionRepository transactionRepository, AccountRepository accountRepository) {
         this.transactionRepository = transactionRepository;
+        this.accountRepository = accountRepository;
     }
 
 
@@ -50,12 +52,20 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public Transaction editTransaction(Account account, Integer id, Transaction transaction) {
+    public Transaction editTransaction(Integer account_id, Integer id, Transaction transaction) {
+        Account account = (accountRepository.findAllById(account_id));
         Transaction tr = transactionRepository.getOne(id);
         tr.setId(id);
         tr.setTransactionType(transaction.getTransactionType());
         tr.setName(transaction.getName());
         tr.setDate(transaction.getDate());
+        Double newBalance = (account.getBalance())-tr.getAmount();
+        if(transaction.getTransactionType() == TransactionType.INCOME){
+            account.setBalance(newBalance + transaction.getAmount());
+        }else{
+            transaction.setAmount(transaction.getAmount() * (-1));
+            account.setBalance(newBalance + transaction.getAmount());
+        }
         tr.setAmount(transaction.getAmount());
         tr.setAccount(account);
         return transactionRepository.save(tr);

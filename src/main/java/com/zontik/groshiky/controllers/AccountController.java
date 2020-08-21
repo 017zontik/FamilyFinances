@@ -74,7 +74,6 @@ public class AccountController extends BaseController {
 
     @PutMapping(value = "/updateTransaction")
     public Transaction updateTransaction( Integer id, Transaction transaction, Integer account_id) {
-        Account account = (accountService.findAccountById(account_id));
-        return transactionService.editTransaction(account, id, transaction);
+        return  transactionService.editTransaction(account_id, id, transaction);
     }
 }
