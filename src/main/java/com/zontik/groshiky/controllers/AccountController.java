@@ -73,7 +73,8 @@ public class AccountController extends BaseController {
     }
 
     @PutMapping(value = "/updateTransaction")
-    public Transaction updateTransaction( Integer id, Transaction transaction, Integer account_id) {
-        return  transactionService.editTransaction(account_id, id, transaction);
+    public TransactionDto updateTransaction( Integer id, Transaction transaction, Integer account_id) {
+        TransactionDto dto = new TransactionDto(transactionService.editTransaction(account_id, id, transaction));
+        return dto ;
     }
 }
