@@ -38,7 +38,6 @@
     $("#accountModal").on("show.bs.modal", function () {
         $("#accountErrorMessage").hide();
         $("#name").val("");
-
     });
 
     $("#accountsList").click(function (clickAccountEvent) {
@@ -117,7 +116,6 @@
                     $("#transactionModal").modal("hide");
                     updateTransactions($(".highlight-account").attr("data"), $("#transactions"));
                     updateAccount($(".highlight-account").attr("data"));
-
                 }
             }
 
@@ -200,10 +198,16 @@
                 200: function (response) {
                     $("#transactionModal").modal("show");
                     $("#typeTransactionError").hide();
-                    $("#dropdownMenuButton").text(response.type);
+                    $("#dropdownMenuButton").text($("[data-transaction-type='" + response.type +"']").text());
+                    transactionType = response.type;
                     $("#dateTransaction").val(response.date);
                     $("#transactionName").val(response.name);
-                    $("#amount").val(response.amount);
+                    if(response.type === "EXPENSE"){
+                        $("#amount").val(response.amount*(-1));
+                    }else{
+                        $("#amount").val(response.amount);
+
+                    }
                     $newTransaction = false;
                 }
             }
