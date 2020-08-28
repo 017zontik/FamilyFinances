@@ -108,7 +108,7 @@
                 date: transactionDate,
                 name: $("#transactionName").val(),
                 amount: $("#amount").val(),
-                account_id: $(".highlight-account").attr("data"),
+                accountId: $(".highlight-account").attr("data"),
                 transactionType: transactionType
             },
             statusCode: {
@@ -151,13 +151,13 @@
                     $.each(response, function (index, value) {
                         let $row = $("<tr>");
                         $row.attr("id", value.id);
-                        $row.attr("type", value.type);
+                        $row.attr("type", value.transactionType);
                         let $dateColumn = $("<td>").text(value.date);
                         $row.append($dateColumn);
                         let $nameColumn = $("<td>").text(value.name);
                         $row.append($nameColumn);
                         let $amountColumn = $("<td>").text((value.amount).toFixed(2));
-                        if (value.amount < 0 || value.type === "EXPENSE") {
+                        if (value.amount < 0 || value.transactionType === "EXPENSE") {
                             $amountColumn.addClass("negative-balance");
                         } else {
                             $amountColumn.addClass("positive-balance");
@@ -198,15 +198,14 @@
                 200: function (response) {
                     $("#transactionModal").modal("show");
                     $("#typeTransactionError").hide();
-                    $("#dropdownMenuButton").text($("[data-transaction-type='" + response.type +"']").text());
-                    transactionType = response.type;
+                    $("#dropdownMenuButton").text($("[data-transaction-type='" + response.transactionType +"']").text());
+                    transactionType = response.transactionType;
                     $("#dateTransaction").val(response.date);
                     $("#transactionName").val(response.name);
-                    if(response.type === "EXPENSE"){
+                    if(response.transactionType=== "EXPENSE"){
                         $("#amount").val(response.amount*(-1));
                     }else{
                         $("#amount").val(response.amount);
-
                     }
                     $newTransaction = false;
                 }

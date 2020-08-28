@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
 
 @RestController("/dashboard")
@@ -17,12 +16,16 @@ public class AccountController extends BaseController {
     private final IAccountService accountService;
     private final IUserService userService;
     private final ITransactionService transactionService;
+    private final TransactionMapper mapper;
+
 
     @Autowired
-    public AccountController(IAccountService accountService, IUserService userService, ITransactionService transactionService) {
+    public AccountController(IAccountService accountService, IUserService userService,
+                             ITransactionService transactionService, TransactionMapper mapper) {
         this.accountService = accountService;
         this.userService = userService;
         this.transactionService = transactionService;
+        this.mapper = mapper;
     }
 
 
@@ -43,7 +46,7 @@ public class AccountController extends BaseController {
         List<Transaction> transactionList = (accountService.findAccountById(accountId)).getTransactions();
         List<TransactionDto> transactionDtos = new ArrayList<>();
         for (Transaction transaction : transactionList) {
-            transactionDtos.add(new TransactionDto(transaction));
+            transactionDtos.add(mapper.toDto(transaction));
         }
         return transactionDtos;
     }
@@ -63,8 +66,7 @@ public class AccountController extends BaseController {
 
     @GetMapping(value = "/transaction")
     public TransactionDto getTransaction(Integer id){
-        TransactionDto dto = new TransactionDto(transactionService.findTransactionById(id));
-        return dto;
+        return mapper.toDto(transactionService.findTransactionById(id));
     }
 
     @DeleteMapping(value = "/deleteTransaction")
@@ -73,8 +75,8 @@ public class AccountController extends BaseController {
     }
 
     @PutMapping(value = "/updateTransaction")
-    public TransactionDto updateTransaction( Integer id, Transaction transaction, Integer account_id) {
-        TransactionDto dto = new TransactionDto(transactionService.editTransaction(account_id, id, transaction));
-        return dto ;
+    public TransactionDto updateTransaction( TransactionDto transactionDto) {
+        return mapper.toDto(transactionService.editTransaction(transactionDto));
     }
 }
+

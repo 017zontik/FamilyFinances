@@ -2,6 +2,7 @@ package com.zontik.groshiky.service;
 
 import com.zontik.groshiky.model.Account;
 import com.zontik.groshiky.model.Transaction;
+import com.zontik.groshiky.model.TransactionDto;
 import com.zontik.groshiky.model.TransactionType;
 import com.zontik.groshiky.repository.AccountRepository;
 import com.zontik.groshiky.repository.TransactionRepository;
@@ -24,7 +25,7 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public Transaction addTransaction(Transaction transaction, Account account) {
-        if(transaction.getTransactionType() == TransactionType.INCOME) {
+        if(transaction.getTransactionType().equals(TransactionType.INCOME)) {
             account.setBalance(account.getBalance() + transaction.getAmount());
         } else {
             transaction.setAmount(transaction.getAmount() * (-1));
@@ -48,26 +49,25 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public Transaction findTransactionById(Integer id) {
-        return transactionRepository.getOne(id);
+        return transactionRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Transaction editTransaction(Integer account_id, Integer id, Transaction transaction) {
-        Account account = (accountRepository.findAllById(account_id));
-        Transaction tr = transactionRepository.getOne(id);
-        tr.setId(id);
-        tr.setTransactionType(transaction.getTransactionType());
-        tr.setName(transaction.getName());
-        tr.setDate(transaction.getDate());
+    public Transaction editTransaction(TransactionDto transactionDto) {
+        Account account = (accountRepository.findAllById(transactionDto.getAccountId()));
+        Transaction tr = transactionRepository.findById(transactionDto.getId()).orElse(null);
         Double newBalance = (account.getBalance())-tr.getAmount();
-        if(transaction.getTransactionType() == TransactionType.INCOME){
-            account.setBalance(newBalance + transaction.getAmount());
+        if(transactionDto.getTransactionType().equals(TransactionType.INCOME)){
+            account.setBalance(newBalance + transactionDto.getAmount());
         }else{
-            transaction.setAmount(transaction.getAmount() * (-1));
-            account.setBalance(newBalance + transaction.getAmount());
+            transactionDto.setAmount(transactionDto.getAmount() * (-1));
+            account.setBalance(newBalance + transactionDto.getAmount());
         }
-        tr.setAmount(transaction.getAmount());
+        tr.setAmount(transactionDto.getAmount());
         tr.setAccount(account);
+        tr.setId(transactionDto.getId());
+        tr.setTransactionType(transactionDto.getTransactionType());
+        tr.setName(transactionDto.getName());
         return transactionRepository.save(tr);
     }
 }
