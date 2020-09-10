@@ -1,12 +1,15 @@
 package com.zontik.groshiky.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zontik.groshiky.format.DateFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
+
 
 @Entity
 @Builder
@@ -19,6 +22,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateFormat.FORMATTER)
     @Column
     private Date date;
 
@@ -28,7 +32,7 @@ public class Transaction {
     @Column
     private Double amount;
 
-    @Column(name="type", nullable = false)
+    @Column(name = "type", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private TransactionType transactionType;
 

@@ -1,17 +1,21 @@
 package com.zontik.groshiky.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.zontik.groshiky.format.DateFormat;
 import lombok.Data;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Data
 public class TransactionDto {
 
     private Integer id;
-    private String date;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateFormat.FORMATTER)
+    private Date date;
     private String name;
     private Double amount;
-    private TransactionType TransactionType;
+    private TransactionType transactionType;
     private Integer accountId;
 
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
 }

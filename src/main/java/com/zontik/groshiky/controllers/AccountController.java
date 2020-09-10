@@ -4,6 +4,7 @@ import com.zontik.groshiky.model.*;
 import com.zontik.groshiky.service.IAccountService;
 import com.zontik.groshiky.service.ITransactionService;
 import com.zontik.groshiky.service.IUserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +17,12 @@ public class AccountController extends BaseController {
     private final IAccountService accountService;
     private final IUserService userService;
     private final ITransactionService transactionService;
-    private final TransactionMapper mapper;
+    private final ModelMapper mapper;
 
 
     @Autowired
     public AccountController(IAccountService accountService, IUserService userService,
-                             ITransactionService transactionService, TransactionMapper mapper) {
+                             ITransactionService transactionService, ModelMapper mapper) {
         this.accountService = accountService;
         this.userService = userService;
         this.transactionService = transactionService;
@@ -46,7 +47,7 @@ public class AccountController extends BaseController {
         List<Transaction> transactionList = (accountService.findAccountById(accountId)).getTransactions();
         List<TransactionDto> transactionDtos = new ArrayList<>();
         for (Transaction transaction : transactionList) {
-            transactionDtos.add(mapper.toDto(transaction));
+            transactionDtos.add(mapper.map(transaction, TransactionDto.class));
         }
         return transactionDtos;
     }
@@ -66,7 +67,7 @@ public class AccountController extends BaseController {
 
     @GetMapping(value = "/transaction")
     public TransactionDto getTransaction(Integer id){
-        return mapper.toDto(transactionService.findTransactionById(id));
+        return mapper.map(transactionService.findTransactionById(id), TransactionDto.class);
     }
 
     @DeleteMapping(value = "/deleteTransaction")
@@ -75,8 +76,8 @@ public class AccountController extends BaseController {
     }
 
     @PutMapping(value = "/updateTransaction")
-    public TransactionDto updateTransaction( TransactionDto transactionDto) {
-        return mapper.toDto(transactionService.editTransaction(transactionDto));
+    public TransactionDto updateTransaction(TransactionDto transactionDto) {
+        return mapper.map(transactionService.editTransaction(transactionDto), TransactionDto.class);
     }
 }
 

@@ -1,26 +1,22 @@
 package com.zontik.groshiky.service;
 
-import com.zontik.groshiky.model.Account;
-import com.zontik.groshiky.model.Transaction;
-import com.zontik.groshiky.model.TransactionDto;
-import com.zontik.groshiky.model.TransactionType;
+import com.zontik.groshiky.model.*;
 import com.zontik.groshiky.repository.AccountRepository;
 import com.zontik.groshiky.repository.TransactionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+@RequiredArgsConstructor
 @Service
 @Transactional
 public class TransactionService implements ITransactionService {
 
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
-    @Autowired
-    public TransactionService(TransactionRepository transactionRepository, AccountRepository accountRepository) {
-        this.transactionRepository = transactionRepository;
-        this.accountRepository = accountRepository;
-    }
+    private final ModelMapper modelMapper;
 
 
     @Override
@@ -54,8 +50,8 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public Transaction editTransaction(TransactionDto transactionDto) {
-        Account account = (accountRepository.findAllById(transactionDto.getAccountId()));
-        Transaction tr = transactionRepository.findById(transactionDto.getId()).orElse(null);
+        Account account = (accountRepository.findAccountById(transactionDto.getAccountId()));
+        Transaction tr = transactionRepository.findTransactionById(transactionDto.getId());
         Double newBalance = (account.getBalance())-tr.getAmount();
         if(transactionDto.getTransactionType().equals(TransactionType.INCOME)){
             account.setBalance(newBalance + transactionDto.getAmount());
@@ -63,11 +59,7 @@ public class TransactionService implements ITransactionService {
             transactionDto.setAmount(transactionDto.getAmount() * (-1));
             account.setBalance(newBalance + transactionDto.getAmount());
         }
-        tr.setAmount(transactionDto.getAmount());
-        tr.setAccount(account);
-        tr.setId(transactionDto.getId());
-        tr.setTransactionType(transactionDto.getTransactionType());
-        tr.setName(transactionDto.getName());
+        modelMapper.map(transactionDto, tr);
         return transactionRepository.save(tr);
     }
 }

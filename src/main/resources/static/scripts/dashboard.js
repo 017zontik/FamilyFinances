@@ -131,12 +131,14 @@
         }
     })
 
-    $("#transactionModal").on("show.bs.modal", function () {
-        $("#typeTransactionError").hide();
-        transactionType = null;
-        $("#dropdownMenuButton").text("Type of transaction");
-        $("#transactionName").val(null);
-        $("#amount").val(null);
+    $("#transactionModal").on("show.bs.modal", function (ev) {
+        if($(ev.target).is("#transactionModal")) {
+            $("#typeTransactionError").hide();
+            transactionType = null;
+            $("#dropdownMenuButton").text("Type of transaction");
+            $("#transactionName").val(null);
+            $("#amount").val(null);
+        }
     })
 
     let $transactionId = 0;
