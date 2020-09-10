@@ -1,5 +1,6 @@
 package com.zontik.groshiky.service;
 
+import com.zontik.groshiky.exception.MissionTransactionException;
 import com.zontik.groshiky.model.*;
 import com.zontik.groshiky.repository.AccountRepository;
 import com.zontik.groshiky.repository.TransactionRepository;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityNotFoundException;
 
 
 @RequiredArgsConstructor
@@ -21,7 +24,7 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public Transaction addTransaction(Transaction transaction, Account account) {
-        if(transaction.getTransactionType().equals(TransactionType.INCOME)) {
+        if (transaction.getTransactionType().equals(TransactionType.INCOME)) {
             account.setBalance(account.getBalance() + transaction.getAmount());
         } else {
             transaction.setAmount(transaction.getAmount() * (-1));
@@ -33,7 +36,8 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public void deleteTransactionById(Integer id) {
-        Transaction transaction = transactionRepository.getOne(id);
+        Transaction transaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new MissionTransactionException("Unable to find transaction with id " + id));
         Account account = transaction.getAccount();
         if (transaction.getTransactionType() == TransactionType.INCOME) {
             account.setBalance(account.getBalance() - transaction.getAmount());
@@ -45,17 +49,18 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public Transaction findTransactionById(Integer id) {
-        return transactionRepository.findById(id).orElse(null);
+        return transactionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Unable to find transaction with id " + id));
     }
 
     @Override
     public Transaction editTransaction(TransactionDto transactionDto) {
         Account account = (accountRepository.findAccountById(transactionDto.getAccountId()));
         Transaction tr = transactionRepository.findTransactionById(transactionDto.getId());
-        Double newBalance = (account.getBalance())-tr.getAmount();
-        if(transactionDto.getTransactionType().equals(TransactionType.INCOME)){
+        Double newBalance = (account.getBalance()) - tr.getAmount();
+        if (transactionDto.getTransactionType().equals(TransactionType.INCOME)) {
             account.setBalance(newBalance + transactionDto.getAmount());
-        }else{
+        } else {
             transactionDto.setAmount(transactionDto.getAmount() * (-1));
             account.setBalance(newBalance + transactionDto.getAmount());
         }

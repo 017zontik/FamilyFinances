@@ -1,5 +1,6 @@
 package com.zontik.groshiky.controllers;
 
+import com.zontik.groshiky.exception.MissionTransactionException;
 import com.zontik.groshiky.model.*;
 import com.zontik.groshiky.service.IAccountService;
 import com.zontik.groshiky.service.ITransactionService;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @RestController("/dashboard")
@@ -65,19 +68,26 @@ public class AccountController extends BaseController {
       return account;
     }
 
-    @GetMapping(value = "/transaction")
-    public TransactionDto getTransaction(Integer id){
+    @GetMapping(value = "/transactions/{id}")
+    public TransactionDto getTransaction(@PathVariable Integer id){
         return mapper.map(transactionService.findTransactionById(id), TransactionDto.class);
     }
 
-    @DeleteMapping(value = "/deleteTransaction")
-    public void deleteTransaction(@RequestParam Integer id){
+    @DeleteMapping(value = "/transactions/{id}")
+    public void deleteTransaction(@PathVariable Integer id){
         transactionService.deleteTransactionById(id);
     }
 
-    @PutMapping(value = "/updateTransaction")
-    public TransactionDto updateTransaction(TransactionDto transactionDto) {
+    @PutMapping(value = "/transactions/{id}")
+    public TransactionDto updateTransaction(@PathVariable Integer id, TransactionDto transactionDto) {
         return mapper.map(transactionService.editTransaction(transactionDto), TransactionDto.class);
     }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({EntityNotFoundException.class, MissionTransactionException.class})
+    protected String handleConflict(RuntimeException ex) {
+        return ex.getMessage();
+    }
+
 }
 

@@ -101,7 +101,7 @@
     }
 
     function editTransactions() {
-        $.ajax("updateTransaction", {
+        $.ajax("/transactions/" + $transactionId, {
             type: "PUT",
             data: {
                 id: $transactionId,
@@ -193,7 +193,7 @@
 
     function editTransaction(editTransactionEvent) {
         $transactionId = $(editTransactionEvent.target.closest("tr")).attr("id");
-        $.ajax("transaction", {
+        $.ajax("/transactions/" + $transactionId, {
             type: "GET",
             data: {id: $transactionId},
             statusCode: {
@@ -241,7 +241,7 @@
 
     $("#deleteThisTransaction").click(function () {
         $("#deleteTransaction").modal("hide");
-        $.ajax("/deleteTransaction", {
+        $.ajax("/transactions/" + $transactionId, {
             type: "DELETE",
             data: {id: $transactionId},
             statusCode: {
