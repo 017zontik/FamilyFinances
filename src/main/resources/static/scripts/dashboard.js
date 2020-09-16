@@ -100,7 +100,7 @@
         }
     }
 
-    function editTransactions() {
+    function updateTransaction() {
         $.ajax("/transactions/" + $transactionId, {
             type: "PUT",
             data: {
@@ -117,6 +117,7 @@
                     updateTransactions($(".highlight-account").attr("data"), $("#transactions"));
                     updateAccount($(".highlight-account").attr("data"));
                 }
+
             }
 
         })
@@ -124,7 +125,7 @@
 
     $("#saveTransaction").click(function () {
         if($newTransaction === false){
-            editTransactions();
+            updateTransaction();
             $newTransaction = true;
         }else{
             addTransaction();
@@ -185,6 +186,7 @@
                     })
                     $("[edit-transaction]").click(editTransaction);
                 }
+
             }
         })
     }
@@ -210,6 +212,10 @@
                         $("#amount").val(response.amount);
                     }
                     $newTransaction = false;
+                },
+                404: function (response) {
+                    $("#transactionError").modal("show");
+                    $("#transactionErrorMessage").text(response.responseText);
                 }
             }
         })
@@ -248,6 +254,10 @@
                 200: function () {
                     updateTransactions($(".highlight-account").attr("data"));
                     updateAccount($(".highlight-account").attr("data"));
+                },
+                404: function (response) {
+                    $("#transactionError").modal("show");
+                    $("#transactionErrorMessage").text(response.responseText);
                 }
             }
         })

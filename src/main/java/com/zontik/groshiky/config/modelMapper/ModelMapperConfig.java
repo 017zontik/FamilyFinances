@@ -1,6 +1,5 @@
-package com.zontik.groshiky.config.security;
+package com.zontik.groshiky.config.modelMapper;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zontik.groshiky.model.Account;
 import com.zontik.groshiky.model.Transaction;
 import com.zontik.groshiky.model.TransactionDto;
@@ -10,11 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import javax.annotation.PostConstruct;
-
-import java.util.TimeZone;
-
 import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
 @Configuration
@@ -44,11 +39,6 @@ public class ModelMapperConfig {
         return mapper;
     }
 
-    @Bean
-    public ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setTimeZone(TimeZone.getDefault());
-        return objectMapper;
-    }
+
 
 }
