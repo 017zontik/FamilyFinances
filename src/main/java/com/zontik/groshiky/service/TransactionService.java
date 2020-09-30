@@ -50,7 +50,8 @@ public class TransactionService implements ITransactionService {
     @Override
     public Transaction editTransaction(Transaction transaction) {
         Account account = transaction.getAccount();
-        Transaction tr = transactionRepository.findTransactionById(transaction.getId());
+        Transaction tr = transactionRepository.findById(transaction.getId()).
+                orElseThrow(() -> new MissionTransactionException("Unable to find transaction with id " + transaction.getId()));;
         Double newBalance = (account.getBalance()) - tr.getAmount();
         if (transaction.getTransactionType().equals(TransactionType.INCOME)) {
             account.setBalance(newBalance + transaction.getAmount());

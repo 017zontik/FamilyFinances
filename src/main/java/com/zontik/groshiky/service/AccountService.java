@@ -1,5 +1,6 @@
 package com.zontik.groshiky.service;
 
+import com.zontik.groshiky.exception.MissionTransactionException;
 import com.zontik.groshiky.repository.AccountRepository;
 import com.zontik.groshiky.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class AccountService implements IAccountService{
 
     @Override
     public Account findAccountById(Integer id) {
-        return accountRepository.findAccountById(id);
+        return accountRepository.findById(id)
+                .orElseThrow(() -> new MissionTransactionException("Unable to find account with id " + id));
     }
 }

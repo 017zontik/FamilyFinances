@@ -1,5 +1,6 @@
 package com.zontik.groshiky.config.modelMapper;
 
+import com.zontik.groshiky.exception.MissionTransactionException;
 import com.zontik.groshiky.model.Account;
 import com.zontik.groshiky.model.Transaction;
 import com.zontik.groshiky.model.TransactionDto;
@@ -26,8 +27,9 @@ public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper mapper = new ModelMapper();
-        Converter<Integer, Account> transactionIdToTransaction = context -> accountRepository.findAccountById(context.getSource());
-        Converter<Account, Integer> accountToAccoutId = context -> context.getSource().getId();
+        Converter<Integer, Account> transactionIdToTransaction = context -> accountRepository.findById(context.getSource())
+                .orElseThrow(() -> new MissionTransactionException("Unable to find account with id " + context.getSource()));;
+        Converter<Account, Integer> accountToAccountId = context -> context.getSource().getId();
         mapper.getConfiguration()
                 .setFieldMatchingEnabled(true)
                 .setSkipNullEnabled(true)
@@ -35,7 +37,7 @@ public class ModelMapperConfig {
         mapper.createTypeMap(TransactionDto.class, Transaction.class)
                 .addMappings(mapping -> mapping.using(transactionIdToTransaction).map(TransactionDto::getAccountId, Transaction::setAccount));
         mapper.createTypeMap(Transaction.class, TransactionDto.class)
-                .addMappings(mapping -> mapping.using(accountToAccoutId).map(Transaction::getAccount, TransactionDto::setAccountId));
+                .addMappings(mapping -> mapping.using(accountToAccountId).map(Transaction::getAccount, TransactionDto::setAccountId));
         return mapper;
     }
 
