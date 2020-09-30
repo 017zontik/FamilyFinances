@@ -84,7 +84,7 @@
                     date: transactionDate,
                     name: $("#transactionName").val(),
                     amount: $("#amount").val(),
-                    account_id: $(".highlight-account").attr("data"),
+                    accountId: $(".highlight-account").attr("data"),
                     transactionType: transactionType
                 },
                 statusCode: {

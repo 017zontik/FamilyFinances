@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
@@ -56,8 +55,8 @@ public class AccountController extends BaseController {
     }
 
     @PostMapping(value = "/addTransaction")
-    public Transaction addTransaction(Transaction transaction, Integer account_id) {
-        Account account = (accountService.findAccountById(account_id));
+    public Transaction addTransaction(Transaction transaction, Integer accountId) {
+        Account account = (accountService.findAccountById(accountId));
         transactionService.addTransaction(transaction, account);
         return transaction;
     }
@@ -80,7 +79,8 @@ public class AccountController extends BaseController {
 
     @PutMapping(value = "/transactions/{id}")
     public TransactionDto updateTransaction(@PathVariable Integer id, TransactionDto transactionDto) {
-        return mapper.map(transactionService.editTransaction(transactionDto), TransactionDto.class);
+        Transaction tr = mapper.map(transactionDto, Transaction.class);
+        return mapper.map(transactionService.editTransaction(tr), TransactionDto.class);
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

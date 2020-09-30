@@ -2,13 +2,10 @@ package com.zontik.groshiky.service;
 
 import com.zontik.groshiky.exception.MissionTransactionException;
 import com.zontik.groshiky.model.*;
-import com.zontik.groshiky.repository.AccountRepository;
 import com.zontik.groshiky.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityNotFoundException;
 
 
@@ -18,9 +15,6 @@ import javax.persistence.EntityNotFoundException;
 public class TransactionService implements ITransactionService {
 
     private final TransactionRepository transactionRepository;
-    private final AccountRepository accountRepository;
-    private final ModelMapper modelMapper;
-
 
     @Override
     public Transaction addTransaction(Transaction transaction, Account account) {
@@ -54,17 +48,16 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public Transaction editTransaction(TransactionDto transactionDto) {
-        Account account = (accountRepository.findAccountById(transactionDto.getAccountId()));
-        Transaction tr = transactionRepository.findTransactionById(transactionDto.getId());
+    public Transaction editTransaction(Transaction transaction) {
+        Account account = transaction.getAccount();
+        Transaction tr = transactionRepository.findTransactionById(transaction.getId());
         Double newBalance = (account.getBalance()) - tr.getAmount();
-        if (transactionDto.getTransactionType().equals(TransactionType.INCOME)) {
-            account.setBalance(newBalance + transactionDto.getAmount());
+        if (transaction.getTransactionType().equals(TransactionType.INCOME)) {
+            account.setBalance(newBalance + transaction.getAmount());
         } else {
-            transactionDto.setAmount(transactionDto.getAmount() * (-1));
-            account.setBalance(newBalance + transactionDto.getAmount());
+            transaction.setAmount(transaction.getAmount() * (-1));
+            account.setBalance(newBalance + transaction.getAmount());
         }
-        modelMapper.map(transactionDto, tr);
-        return transactionRepository.save(tr);
+        return transactionRepository.save(transaction);
     }
 }

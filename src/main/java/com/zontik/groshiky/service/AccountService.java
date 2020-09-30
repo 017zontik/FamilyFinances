@@ -31,6 +31,6 @@ public class AccountService implements IAccountService{
 
     @Override
     public Account findAccountById(Integer id) {
-        return accountRepository.findAllById(id);
+        return accountRepository.findAccountById(id);
     }
 }
