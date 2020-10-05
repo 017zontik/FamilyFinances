@@ -22,7 +22,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateFormat.FORMATTER)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateFormat.DATEFORMAT)
     @Column
     private Date date;
 

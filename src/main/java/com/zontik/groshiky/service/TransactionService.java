@@ -1,6 +1,6 @@
 package com.zontik.groshiky.service;
 
-import com.zontik.groshiky.exception.MissionTransactionException;
+import com.zontik.groshiky.exception.NotFoundTransactionException;
 import com.zontik.groshiky.model.*;
 import com.zontik.groshiky.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +31,9 @@ public class TransactionService implements ITransactionService {
     @Override
     public void deleteTransactionById(Integer id) {
         Transaction transaction = transactionRepository.findById(id)
-                .orElseThrow(() -> new MissionTransactionException("Unable to find transaction with id " + id));
+                .orElseThrow(() -> new NotFoundTransactionException("Unable to find transaction with id " + id));
         Account account = transaction.getAccount();
-        if (transaction.getTransactionType() == TransactionType.INCOME) {
+        if (transaction.getTransactionType().equals(TransactionType.INCOME)) {
             account.setBalance(account.getBalance() - transaction.getAmount());
         } else {
             account.setBalance(account.getBalance() - transaction.getAmount());
@@ -51,7 +51,7 @@ public class TransactionService implements ITransactionService {
     public Transaction editTransaction(Transaction transaction) {
         Account account = transaction.getAccount();
         Transaction tr = transactionRepository.findById(transaction.getId()).
-                orElseThrow(() -> new MissionTransactionException("Unable to find transaction with id " + transaction.getId()));;
+                orElseThrow(() -> new NotFoundTransactionException("Unable to find transaction with id " + transaction.getId()));;
         Double newBalance = (account.getBalance()) - tr.getAmount();
         if (transaction.getTransactionType().equals(TransactionType.INCOME)) {
             account.setBalance(newBalance + transaction.getAmount());

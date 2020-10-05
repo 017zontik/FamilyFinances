@@ -1,7 +1,7 @@
 package com.zontik.groshiky.controllers;
 
-import com.zontik.groshiky.exception.MissionAccountException;
-import com.zontik.groshiky.exception.MissionTransactionException;
+import com.zontik.groshiky.exception.NotFoundAccountException;
+import com.zontik.groshiky.exception.NotFoundTransactionException;
 import com.zontik.groshiky.model.*;
 import com.zontik.groshiky.service.IAccountService;
 import com.zontik.groshiky.service.ITransactionService;
@@ -57,7 +57,7 @@ public class AccountController extends BaseController {
 
     @PostMapping(value = "/addTransaction")
     public Transaction addTransaction(Transaction transaction, Integer accountId) {
-        Account account = (accountService.findAccountById(accountId));
+        Account account = accountService.findAccountById(accountId);
         transactionService.addTransaction(transaction, account);
         return transaction;
     }
@@ -85,7 +85,7 @@ public class AccountController extends BaseController {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({EntityNotFoundException.class, MissionTransactionException.class, MissionAccountException.class})
+    @ExceptionHandler({EntityNotFoundException.class, NotFoundTransactionException.class, NotFoundAccountException.class})
     protected String handleConflict(RuntimeException ex) {
         return ex.getMessage();
     }

@@ -124,7 +124,7 @@
     }
 
     $("#saveTransaction").click(function () {
-        if($newTransaction === false){
+        if(!$newTransaction){
             updateTransaction();
             $newTransaction = true;
         }else{

@@ -10,7 +10,7 @@ public class TransactionDto {
 
     private Integer id;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateFormat.FORMATTER)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateFormat.DATEFORMAT)
     private Date date;
     private String name;
     private Double amount;
