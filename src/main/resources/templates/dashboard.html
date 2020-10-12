@@ -127,6 +127,7 @@
                                 <th>Name</th>
                                 <th>Amount</th>
                                 <th></th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -242,6 +243,21 @@
                 </button>
                 <button type="button" class="btn btn-primary" id="deleteThisTransaction">YES</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="transactionError"
+     role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="alert alert-danger" id="transactionErrorMessage"
+                 role="alert"></div>
         </div>
     </div>
 </div>

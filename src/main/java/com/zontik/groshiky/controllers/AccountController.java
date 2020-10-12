@@ -1,14 +1,17 @@
 package com.zontik.groshiky.controllers;
 
+import com.zontik.groshiky.exception.NotFoundAccountException;
+import com.zontik.groshiky.exception.NotFoundTransactionException;
 import com.zontik.groshiky.model.*;
 import com.zontik.groshiky.service.IAccountService;
 import com.zontik.groshiky.service.ITransactionService;
 import com.zontik.groshiky.service.IUserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @RestController("/dashboard")
@@ -17,12 +20,16 @@ public class AccountController extends BaseController {
     private final IAccountService accountService;
     private final IUserService userService;
     private final ITransactionService transactionService;
+    private final ModelMapper mapper;
+
 
     @Autowired
-    public AccountController(IAccountService accountService, IUserService userService, ITransactionService transactionService) {
+    public AccountController(IAccountService accountService, IUserService userService,
+                             ITransactionService transactionService, ModelMapper mapper) {
         this.accountService = accountService;
         this.userService = userService;
         this.transactionService = transactionService;
+        this.mapper = mapper;
     }
 
 
@@ -43,14 +50,14 @@ public class AccountController extends BaseController {
         List<Transaction> transactionList = (accountService.findAccountById(accountId)).getTransactions();
         List<TransactionDto> transactionDtos = new ArrayList<>();
         for (Transaction transaction : transactionList) {
-            transactionDtos.add(new TransactionDto(transaction));
+            transactionDtos.add(mapper.map(transaction, TransactionDto.class));
         }
         return transactionDtos;
     }
 
     @PostMapping(value = "/addTransaction")
-    public Transaction addTransaction(Transaction transaction, Integer account_id) {
-        Account account = (accountService.findAccountById(account_id));
+    public Transaction addTransaction(Transaction transaction, Integer accountId) {
+        Account account = accountService.findAccountById(accountId);
         transactionService.addTransaction(transaction, account);
         return transaction;
     }
@@ -61,8 +68,27 @@ public class AccountController extends BaseController {
       return account;
     }
 
-    @DeleteMapping(value = "/deleteTransaction")
-    public void deleteTransaction(@RequestParam Integer id){
+    @GetMapping(value = "/transactions/{id}")
+    public TransactionDto getTransaction(@PathVariable Integer id){
+        return mapper.map(transactionService.findTransactionById(id), TransactionDto.class);
+    }
+
+    @DeleteMapping(value = "/transactions/{id}")
+    public void deleteTransaction(@PathVariable Integer id){
         transactionService.deleteTransactionById(id);
     }
+
+    @PutMapping(value = "/transactions/{id}")
+    public TransactionDto updateTransaction(@PathVariable Integer id, TransactionDto transactionDto) {
+        Transaction tr = mapper.map(transactionDto, Transaction.class);
+        return mapper.map(transactionService.editTransaction(tr), TransactionDto.class);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({EntityNotFoundException.class, NotFoundTransactionException.class, NotFoundAccountException.class})
+    protected String handleConflict(RuntimeException ex) {
+        return ex.getMessage();
+    }
+
 }
+

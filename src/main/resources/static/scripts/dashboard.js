@@ -38,7 +38,6 @@
     $("#accountModal").on("show.bs.modal", function () {
         $("#accountErrorMessage").hide();
         $("#name").val("");
-
     });
 
     $("#accountsList").click(function (clickAccountEvent) {
@@ -77,7 +76,7 @@
     });
 
 
-    $("#saveTransaction").click(function () {
+    function addTransaction() {
         if ((transactionType != null) && ($("#newTransaction")[0].reportValidity())) {
             $.ajax("addTransaction", {
                 type: "POST",
@@ -85,7 +84,7 @@
                     date: transactionDate,
                     name: $("#transactionName").val(),
                     amount: $("#amount").val(),
-                    account_id: $(".highlight-account").attr("data"),
+                    accountId: $(".highlight-account").attr("data"),
                     transactionType: transactionType
                 },
                 statusCode: {
@@ -99,17 +98,52 @@
         } else if (!transactionType) {
             $("#typeTransactionError").text("Select type of transaction").show();
         }
+    }
+
+    function updateTransaction() {
+        $.ajax("/transactions/" + $transactionId, {
+            type: "PUT",
+            data: {
+                id: $transactionId,
+                date: transactionDate,
+                name: $("#transactionName").val(),
+                amount: $("#amount").val(),
+                accountId: $(".highlight-account").attr("data"),
+                transactionType: transactionType
+            },
+            statusCode: {
+                200: function (response) {
+                    $("#transactionModal").modal("hide");
+                    updateTransactions($(".highlight-account").attr("data"), $("#transactions"));
+                    updateAccount($(".highlight-account").attr("data"));
+                }
+
+            }
+
+        })
+    }
+
+    $("#saveTransaction").click(function () {
+        if(!$newTransaction){
+            updateTransaction();
+            $newTransaction = true;
+        }else{
+            addTransaction();
+        }
     })
 
-    $("#transactionModal").on("show.bs.modal", function () {
-        $("#typeTransactionError").hide();
-        transactionType = null;
-        $("#dropdownMenuButton").text("Type of transaction");
-        $("#transactionName").val(null);
-        $("#amount").val(null);
+    $("#transactionModal").on("show.bs.modal", function (ev) {
+        if($(ev.target).is("#transactionModal")) {
+            $("#typeTransactionError").hide();
+            transactionType = null;
+            $("#dropdownMenuButton").text("Type of transaction");
+            $("#transactionName").val(null);
+            $("#amount").val(null);
+        }
     })
 
     let $transactionId = 0;
+
     function updateTransactions(accountId, $transactionsElement) {
         $.ajax("transactions", {
             type: "GET",
@@ -120,35 +154,73 @@
                     $.each(response, function (index, value) {
                         let $row = $("<tr>");
                         $row.attr("id", value.id);
+                        $row.attr("type", value.transactionType);
                         let $dateColumn = $("<td>").text(value.date);
                         $row.append($dateColumn);
                         let $nameColumn = $("<td>").text(value.name);
                         $row.append($nameColumn);
                         let $amountColumn = $("<td>").text((value.amount).toFixed(2));
-                        if (value.amount < 0) {
+                        if (value.amount < 0 || value.transactionType === "EXPENSE") {
                             $amountColumn.addClass("negative-balance");
                         } else {
                             $amountColumn.addClass("positive-balance");
                         }
                         $row.append($amountColumn);
+                        let $editTransaction = $("<td>").append($("<a type='button' " +
+                            "class='btn d-flex align-items-center text-muted ' edit-transaction" +
+                            " href='#'>")
+                            .append($("<span data-feather='edit'>")));
+                        $row.append($editTransaction);
                         let $deleteTransaction = $("<td>").append($("<a type='button' " +
                             "class='btn d-flex align-items-center text-muted ' delete-transaction" +
                             " href='#'>")
-                            .append($("<span data-feather='minus-circle'>")));
+                            .append($("<span data-feather='trash-2'>")));
                         $row.append($deleteTransaction);
-
                         $("table tbody", $transactionsElement).append($row);
                     })
                     feather.replace();
                     $("[delete-transaction]").click(function (deleteTransactionEvent) {
                         $transactionId = $(deleteTransactionEvent.target.closest("tr")).attr("id");
                         $("#deleteTransaction").modal("show");
-                    })
 
+                    })
+                    $("[edit-transaction]").click(editTransaction);
+                }
+
+            }
+        })
+    }
+
+   let $newTransaction = true;
+
+    function editTransaction(editTransactionEvent) {
+        $transactionId = $(editTransactionEvent.target.closest("tr")).attr("id");
+        $.ajax("/transactions/" + $transactionId, {
+            type: "GET",
+            data: {id: $transactionId},
+            statusCode: {
+                200: function (response) {
+                    $("#transactionModal").modal("show");
+                    $("#typeTransactionError").hide();
+                    $("#dropdownMenuButton").text($("[data-transaction-type='" + response.transactionType +"']").text());
+                    transactionType = response.transactionType;
+                    $("#dateTransaction").val(response.date);
+                    $("#transactionName").val(response.name);
+                    if(response.transactionType=== "EXPENSE"){
+                        $("#amount").val(response.amount*(-1));
+                    }else{
+                        $("#amount").val(response.amount);
+                    }
+                    $newTransaction = false;
+                },
+                404: function (response) {
+                    $("#transactionError").modal("show");
+                    $("#transactionErrorMessage").text(response.responseText);
                 }
             }
         })
     }
+
 
 
     function updateAccount(accountId) {
@@ -160,7 +232,6 @@
                     let accountBalance = $(".account-balance", ".highlight-account");
                     accountBalance.removeClass("text-danger", "text-seccess");
                     if (response.balance < 0) {
-
                         accountBalance.addClass("text-danger");
                         accountBalance.text((response.balance).toFixed(2) + " BYN");
                     } else {
@@ -176,17 +247,22 @@
 
     $("#deleteThisTransaction").click(function () {
         $("#deleteTransaction").modal("hide");
-        $.ajax("/deleteTransaction", {
+        $.ajax("/transactions/" + $transactionId, {
             type: "DELETE",
             data: {id: $transactionId},
             statusCode: {
                 200: function () {
                     updateTransactions($(".highlight-account").attr("data"));
                     updateAccount($(".highlight-account").attr("data"));
+                },
+                404: function (response) {
+                    $("#transactionError").modal("show");
+                    $("#transactionErrorMessage").text(response.responseText);
                 }
             }
         })
     })
+
 
 }())
 
