@@ -10,7 +10,7 @@
         $("#accountsList li a").eq(0).click();
     })
 
-    $("#saveAccount").click(function () {
+    function addAccount() {
         if ($("#newAccount")[0].reportValidity()) {
             $.ajax("addAccount", {
                 type: "POST",
@@ -33,8 +33,19 @@
                 },
             });
         }
+    }
 
+
+    $("#saveAccount").click(function () {
+        //if(!$newAccount){
+            editAccount();
+            $newAccount = true;
+        // }else{
+        //     addAccount();
+        // }
     });
+
+
     $("#accountModal").on("show.bs.modal", function () {
         $("#accountErrorMessage").hide();
         $("#name").val("");
@@ -229,6 +240,7 @@
             data: {id: accountId},
             statusCode: {
                 200: function (response) {
+                    $("a div div strong",".highlight-account" ).text(response.name);
                     let accountBalance = $(".account-balance", ".highlight-account");
                     accountBalance.removeClass("text-danger", "text-seccess");
                     if (response.balance < 0) {
@@ -263,6 +275,34 @@
         })
     })
 
+
+
+    function editAccount() {
+        $.ajax("account", {
+            type: "GET",
+            data: {id: $(".highlight-account").attr("data")},
+            statusCode: {
+               200: function (response) {
+                   $("#name").val(response.name);
+                   $.ajax("account/" + response.id, {
+                       type: "PUT",
+                       data: {
+                           id: response.id,
+                           name: $("#name").val(),
+                           balance: response.balance
+                       },
+                       statusCode: {
+                           200: function (response) {
+                               $("#accountModal").modal("hide");
+                               updateAccount($(".highlight-account").attr("data"));
+                           }
+                       }
+                   })
+               }
+            }
+        })
+    }
+    let $newAccount = true;
 
 }())
 
