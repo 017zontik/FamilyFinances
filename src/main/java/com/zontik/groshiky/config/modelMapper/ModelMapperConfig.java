@@ -2,6 +2,7 @@ package com.zontik.groshiky.config.modelMapper;
 
 import com.zontik.groshiky.exception.NotFoundTransactionException;
 import com.zontik.groshiky.model.Account;
+import com.zontik.groshiky.model.AccountDto;
 import com.zontik.groshiky.model.Transaction;
 import com.zontik.groshiky.model.TransactionDto;
 import com.zontik.groshiky.repository.AccountRepository;
@@ -38,6 +39,8 @@ public class ModelMapperConfig {
                 .addMappings(mapping -> mapping.using(transactionIdToTransaction).map(TransactionDto::getAccountId, Transaction::setAccount));
         mapper.createTypeMap(Transaction.class, TransactionDto.class)
                 .addMappings(mapping -> mapping.using(accountToAccountId).map(Transaction::getAccount, TransactionDto::setAccountId));
+        mapper.createTypeMap(AccountDto.class, Account.class);
+        mapper.createTypeMap(Account.class, AccountDto.class);
         return mapper;
     }
 
