@@ -84,6 +84,12 @@ public class AccountController extends BaseController {
         return mapper.map(transactionService.editTransaction(tr), TransactionDto.class);
     }
 
+    @PutMapping(value = "/account/{id}")
+    public AccountDto editAccount(@PathVariable Integer id, AccountDto accountDto) {
+        Account account = mapper.map(accountDto, Account.class);
+        return mapper.map(accountService.editAccount(account), AccountDto.class);
+    }
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({EntityNotFoundException.class, NotFoundTransactionException.class, NotFoundAccountException.class})
     protected String handleConflict(RuntimeException ex) {
