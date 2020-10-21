@@ -37,12 +37,12 @@
 
 
     $("#saveAccount").click(function () {
-        //if(!$newAccount){
+        if(!$newAccount){
             editAccount();
             $newAccount = true;
-        // }else{
-        //     addAccount();
-        // }
+        }else{
+            addAccount();
+        }
     });
 
 
@@ -275,7 +275,9 @@
         })
     })
 
-
+    $("svg.feather.feather-file-text").click(function () {
+        $("#accountModal").modal("show");
+    })
 
     function editAccount() {
         $.ajax("account", {
@@ -284,6 +286,7 @@
             statusCode: {
                200: function (response) {
                    $("#name").val(response.name);
+                   $newAccount = false;
                    $.ajax("account/" + response.id, {
                        type: "PUT",
                        data: {
