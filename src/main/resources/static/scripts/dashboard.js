@@ -38,8 +38,8 @@
 
     $("#saveAccount").click(function () {
         if(!$newAccount){
-            editAccount();
-            $newAccount = true;
+        editAccount();
+          $newAccount = true;
         }else{
             addAccount();
         }
@@ -135,16 +135,16 @@
     }
 
     $("#saveTransaction").click(function () {
-        if(!$newTransaction){
+        if (!$newTransaction) {
             updateTransaction();
             $newTransaction = true;
-        }else{
+        } else {
             addTransaction();
         }
     })
 
     $("#transactionModal").on("show.bs.modal", function (ev) {
-        if($(ev.target).is("#transactionModal")) {
+        if ($(ev.target).is("#transactionModal")) {
             $("#typeTransactionError").hide();
             transactionType = null;
             $("#dropdownMenuButton").text("Type of transaction");
@@ -202,7 +202,8 @@
         })
     }
 
-   let $newTransaction = true;
+    let $newTransaction = true;
+    let $newAccount = true;
 
     function editTransaction(editTransactionEvent) {
         $transactionId = $(editTransactionEvent.target.closest("tr")).attr("id");
@@ -213,13 +214,13 @@
                 200: function (response) {
                     $("#transactionModal").modal("show");
                     $("#typeTransactionError").hide();
-                    $("#dropdownMenuButton").text($("[data-transaction-type='" + response.transactionType +"']").text());
+                    $("#dropdownMenuButton").text($("[data-transaction-type='" + response.transactionType + "']").text());
                     transactionType = response.transactionType;
                     $("#dateTransaction").val(response.date);
                     $("#transactionName").val(response.name);
-                    if(response.transactionType=== "EXPENSE"){
-                        $("#amount").val(response.amount*(-1));
-                    }else{
+                    if (response.transactionType === "EXPENSE") {
+                        $("#amount").val(response.amount * (-1));
+                    } else {
                         $("#amount").val(response.amount);
                     }
                     $newTransaction = false;
@@ -233,14 +234,13 @@
     }
 
 
-
     function updateAccount(accountId) {
         $.ajax("account", {
             type: "GET",
             data: {id: accountId},
             statusCode: {
                 200: function (response) {
-                    $("a div div strong",".highlight-account" ).text(response.name);
+                    $("a div div strong", ".highlight-account").text(response.name);
                     let accountBalance = $(".account-balance", ".highlight-account");
                     accountBalance.removeClass("text-danger", "text-seccess");
                     if (response.balance < 0) {
@@ -254,7 +254,6 @@
             }
         })
     }
-
 
 
     $("#deleteThisTransaction").click(function () {
@@ -275,37 +274,60 @@
         })
     })
 
-    $("svg.feather.feather-file-text").click(function () {
-        $("#accountModal").modal("show");
+    let $accountId = 0;
+    $("svg.feather.feather-file-text").click(function (editAccountEvent) {
+        $accountId = $(editAccountEvent.target.closest("li")).attr("data");
+        $newAccount = false;
+        getAccount();
+
     })
 
-    function editAccount() {
+
+    let balance = 0;
+
+    function getAccount() {
         $.ajax("account", {
             type: "GET",
-            data: {id: $(".highlight-account").attr("data")},
+            data: {id: $accountId},
             statusCode: {
-               200: function (response) {
-                   $("#name").val(response.name);
-                   $newAccount = false;
-                   $.ajax("account/" + response.id, {
-                       type: "PUT",
-                       data: {
-                           id: response.id,
-                           name: $("#name").val(),
-                           balance: response.balance
-                       },
-                       statusCode: {
-                           200: function (response) {
-                               $("#accountModal").modal("hide");
-                               updateAccount($(".highlight-account").attr("data"));
-                           }
-                       }
-                   })
-               }
+                200: function (response) {
+                    $("#accountModal").modal("show");
+                    $("#name").val(response.name);
+                    balance = response.balance;
+                    editAccount(balance);
+                }
             }
         })
     }
-    let $newAccount = true;
+
+
+
+
+    function editAccount(balance) {
+        $.ajax("account/" + $accountId, {
+            type: "PUT",
+            data: {
+                id: $accountId,
+                name: $("#name").val(),
+                balance: balance
+            },
+            statusCode: {
+                200: function (response) {
+                    $("#accountModal").modal("hide");
+                    $("a div div strong", "li[data='$accountId']").text(response.name);
+                }
+
+            }
+        })
+
+
+    }
+
+
+
+
+
+
 
 }())
 
