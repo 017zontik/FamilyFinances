@@ -314,7 +314,7 @@
             statusCode: {
                 200: function (response) {
                     $("#accountModal").modal("hide");
-                    $("a div div strong", "li[data='$accountId']").text(response.name);
+                    $("div > strong", "li[data=" + $accountId + "]").text(response.name);
                 }
 
             }
