@@ -1,5 +1,6 @@
 package com.zontik.groshiky.controllers;
 
+import com.zontik.groshiky.exception.AccountsNameExist;
 import com.zontik.groshiky.exception.NotFoundAccountException;
 import com.zontik.groshiky.exception.NotFoundTransactionException;
 import com.zontik.groshiky.model.*;
@@ -91,7 +92,8 @@ public class AccountController extends BaseController {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({EntityNotFoundException.class, NotFoundTransactionException.class, NotFoundAccountException.class})
+    @ExceptionHandler({EntityNotFoundException.class, NotFoundTransactionException.class,
+            NotFoundAccountException.class, AccountsNameExist.class})
     protected String handleConflict(RuntimeException ex) {
         return ex.getMessage();
     }

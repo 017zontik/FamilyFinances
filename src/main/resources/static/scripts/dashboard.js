@@ -37,10 +37,10 @@
 
 
     $("#saveAccount").click(function () {
-        if(!$newAccount){
-        editAccount();
-          $newAccount = true;
-        }else{
+        if (!$newAccount) {
+            editAccount();
+            $newAccount = true;
+        } else {
             addAccount();
         }
     });
@@ -294,16 +294,14 @@
                     $("#accountModal").modal("show");
                     $("#name").val(response.name);
                     balance = response.balance;
-                    editAccount(balance);
+
                 }
             }
         })
     }
 
 
-
-
-    function editAccount(balance) {
+    function editAccount() {
         $.ajax("account/" + $accountId, {
             type: "PUT",
             data: {
@@ -315,18 +313,14 @@
                 200: function (response) {
                     $("#accountModal").modal("hide");
                     $("div > strong", "li[data=" + $accountId + "]").text(response.name);
-                }
-
+                },
+                404: function (response) {
+                    $("#accountErrorMessage").text(response.responseText).show();
+                    $newAccount = false;
+                },
             }
         })
-
-
     }
-
-
-
-
-
 
 
 }())
