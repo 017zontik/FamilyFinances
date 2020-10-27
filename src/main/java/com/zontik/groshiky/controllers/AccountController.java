@@ -1,5 +1,6 @@
 package com.zontik.groshiky.controllers;
 
+import com.zontik.groshiky.exception.AccountsNameExist;
 import com.zontik.groshiky.exception.NotFoundAccountException;
 import com.zontik.groshiky.exception.NotFoundTransactionException;
 import com.zontik.groshiky.model.*;
@@ -84,8 +85,15 @@ public class AccountController extends BaseController {
         return mapper.map(transactionService.editTransaction(tr), TransactionDto.class);
     }
 
+    @PutMapping(value = "/account/{id}")
+    public AccountDto editAccount(@PathVariable Integer id, AccountDto accountDto) {
+        Account account = mapper.map(accountDto, Account.class);
+        return mapper.map(accountService.editAccount(account), AccountDto.class);
+    }
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({EntityNotFoundException.class, NotFoundTransactionException.class, NotFoundAccountException.class})
+    @ExceptionHandler({EntityNotFoundException.class, NotFoundTransactionException.class,
+            NotFoundAccountException.class, AccountsNameExist.class})
     protected String handleConflict(RuntimeException ex) {
         return ex.getMessage();
     }

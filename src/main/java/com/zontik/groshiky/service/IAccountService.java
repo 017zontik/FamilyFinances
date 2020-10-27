@@ -6,4 +6,5 @@ public interface IAccountService {
     Account addAccount(Account account);
     Account getAccountByName(String name, Integer id);
     Account findAccountById(Integer id);
+    Object editAccount(Account account);
 }
