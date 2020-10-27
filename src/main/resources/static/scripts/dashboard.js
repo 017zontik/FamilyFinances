@@ -38,6 +38,7 @@
 
     $("#saveAccount").click(function () {
         if (!$newAccount) {
+
             editAccount();
             $newAccount = true;
         } else {
@@ -207,6 +208,7 @@
 
     function editTransaction(editTransactionEvent) {
         $transactionId = $(editTransactionEvent.target.closest("tr")).attr("id");
+
         $.ajax("/transactions/" + $transactionId, {
             type: "GET",
             data: {id: $transactionId},
@@ -291,6 +293,7 @@
             data: {id: $accountId},
             statusCode: {
                 200: function (response) {
+                    $("#exampleModalLabel").text("Do you want to edit "+ response.name +" name?");
                     $("#accountModal").modal("show");
                     $("#name").val(response.name);
                     balance = response.balance;
